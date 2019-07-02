@@ -87,7 +87,7 @@ public class ParserCSV {
 		
 		for(int i = 1; i< records.size() ; i++) {
 			line = records.get(i);
-			if(line.size() < 7) {
+			if(line.size() < 27) {
 				ri++;
 			}else {
 				
@@ -117,7 +117,7 @@ public class ParserCSV {
 				
 				label = line.get(4);
 				
-				amount = Double.valueOf(line.get(5));
+				amount = Double.parseDouble(line.get(5));
 				
 				if(line.get(6).length() != 1) {
 					rs++;
