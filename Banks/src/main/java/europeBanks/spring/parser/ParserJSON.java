@@ -92,7 +92,6 @@ public class ParserJSON {
 
 	}
 	
-	//cambiare questa 
 	public void downloadCSV(String urlStr, String fileName) throws IOException, FileSystemException{
 		File file = new File(fileName);
 		//se un file con quel nome già esiste non fa niente

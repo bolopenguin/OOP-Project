@@ -35,7 +35,6 @@ public class BudgetService implements IBudgetService {
 
 		parse.downloadJSON(url_json,parse.getNameJSON());
 		System.out.println("DONE");
-		//il problema è qua, non scarica il csv
 		parse.downloadCSV(parse.getURL(nameJSON), parse.getNameCSV());
 		List<List<String>> records = ParserCSV.readFile(parse.getNameCSV());
 
