@@ -24,22 +24,9 @@ public class BudgetService implements IBudgetService {
 	 */
 	private static ArrayList<Budget> budgets;
 	private static ArrayList<Metadata> metadata;
-	
-	/**
-	 * blocco che parte all'avvio, serve per andare a riempire gli array list
-	 * cioè fa partire il download e il parsing dei dati
-	 */
 
-	static {
-		try {
-			budgets = fill();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 	
-	private static ArrayList<Budget> fill() throws IOException {
-		ArrayList<Budget> BudgetB = new ArrayList<Budget>();
+	public static void setBudgets() throws IOException {
 		String nameCSV = "Budget.csv";
 		String nameJSON = "JsonFile.json";
 
@@ -58,15 +45,11 @@ public class BudgetService implements IBudgetService {
 
 		System.out.println("Rows accepted : " + Budget.size());
 		for(int i = 0; i < Budget.size(); i++) {
-			BudgetB.add(new Budget(Budget.get(i)));
+			budgets.add(new Budget(Budget.get(i)));
 		} 
-
-		BudgetService.setMetadata(new ArrayList<Metadata>());
-
-		return BudgetB;
 	}
 	
-	private static void setMetadata(ArrayList<Metadata> arrayList) {
+	public static void setMetadata() {
 		metadata.add(new Metadata("lei_code","Legal Entity Identifier Code","String"));
 		metadata.add(new Metadata("nsa","Country","String"));
 		metadata.add(new Metadata("period","Periodo di Riferimento","Integer"));
