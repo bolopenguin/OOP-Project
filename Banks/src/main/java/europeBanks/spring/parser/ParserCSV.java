@@ -16,14 +16,14 @@ import europeBanks.spring.model.*;
 
 public class ParserCSV {
 	final static String COMMA_DELIMITER = ",";
-	private static ArrayList <Budget> Budget;
+	private static ArrayList <Budget> budgets;
 
-	public static ArrayList<Budget> getBudget() {
-		return Budget;
+	public static ArrayList<Budget> getBudgets() {
+		return budgets;
 	}
 
-	public static void setBudget(ArrayList<Budget> Budget) {
-		ParserCSV.Budget = Budget;
+	public static void setBudgets(ArrayList<Budget> budgets) {
+		ParserCSV.budgets = budgets;
 	}
 	
 	/**
@@ -71,68 +71,23 @@ public class ParserCSV {
 	 * @param records
 	 */
 	public static void parserCSV( List<List<String>> records) {
-		ArrayList <Budget> Budget = new ArrayList <Budget>();
+		ArrayList <Budget> template = new ArrayList <Budget>();
 		List<String> line;
-		
-		int ri = 0; 
-		int rs = 0;	
-		
-        String lei_code;
-		String nsa;
-		int period;
-		int item;
-		String label;
-		double amount;
-		int n_quarters;
-		
 		for(int i = 1; i< records.size() ; i++) {
 			line = records.get(i);
-			if(line.size() < 27) {
-				ri++;
-			}else {
+				Budget b = new Budget(
+						line.get(0).isEmpty() ? "LeiCodeNotFound" : line.get(0),
+						line.get(1).isEmpty() ? "NsaCodeNotFound" : line.get(1),
+						line.get(2).isEmpty() ? 0 : Integer.parseInt(line.get(2)),
+						line.get(3).isEmpty() ? 0 : Integer.parseInt(line.get(3)),
+						line.get(4).replace("", "").isEmpty() ? "LabelNotFound" : line.get(4),
+						line.get(5).isEmpty() ? 0 : Double.parseDouble(line.get(5)),
+						line.get(6).isEmpty() ? 0 : Integer.parseInt(line.get(6))
+						);
+				template.add(b);
 				
-				if(line.get(0).length() != 20) {
-					rs++;
-					continue;
-				}
-				lei_code = line.get(0);
-				
-				if(line.get(1).length() != 2) {
-					rs++;
-					continue;
-				}
-				nsa = line.get(1);
-				
-				if(line.get(2).length() != 6) {
-					rs++;
-					continue;
-				}
-				period = Integer.parseInt(line.get(2));
-				
-				if(line.get(3).length() != 7) {
-					rs++;
-					continue;
-				}
-				item = Integer.parseInt(line.get(3));
-				
-				label = line.get(4);
-				
-				amount = Double.parseDouble(line.get(5));
-				
-				if(line.get(6).length() != 1) {
-					rs++;
-					continue;
-				}
-				n_quarters = Integer.parseInt(line.get(5));
-				
-				
-				Budget b = new Budget(lei_code, nsa, period, item, label, amount, n_quarters);
-				Budget.add(b);
-				}
 			}
-		setBudget(Budget);
-		System.out.println("Riga insufficiente : "+ri);
-		System.out.println("Riga errata : "+rs);
+		setBudgets(template);
 	}	
 }
 
