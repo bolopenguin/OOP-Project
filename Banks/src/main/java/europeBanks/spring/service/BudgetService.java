@@ -40,12 +40,7 @@ public class BudgetService implements IBudgetService {
 
 
 		ParserCSV.parserCSV(records);
-		ArrayList<Budget> Budget = ParserCSV.getBudgets();
-
-		System.out.println("Rows accepted : " + Budget.size());
-		for(int i = 0; i < Budget.size(); i++) {
-			budgets.add(new Budget(Budget.get(i)));
-		} 
+		budgets = ParserCSV.getBudgets();
 	}
 	
 	public static void setMetadata() {

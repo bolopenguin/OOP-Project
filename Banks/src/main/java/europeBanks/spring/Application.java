@@ -15,7 +15,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
     		try {
     			BudgetService.setBudgets();
-    			BudgetService.setMetadata();
+				System.out.println("Droga");
+    		//	BudgetService.setMetadata();
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
