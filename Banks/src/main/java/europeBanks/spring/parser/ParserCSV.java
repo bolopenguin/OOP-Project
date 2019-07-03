@@ -82,7 +82,6 @@ public class ParserCSV {
 				for(int j = 5 ; j < line.size() - 2; j++) {
 					tmp = tmp + "," + line.get(j);
 				}
-				System.out.println(tmp);
 				Budget b = new Budget(
 						line.get(0).isEmpty() ? "LeiCodeNotFound" : line.get(0),
 						line.get(1).isEmpty() ? "NsaCodeNotFound" : line.get(1),

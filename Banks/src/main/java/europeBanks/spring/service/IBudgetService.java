@@ -25,8 +25,8 @@ public interface IBudgetService {
 	 */
 	
 	double sumBudget(String property, String value);
-	double maxBudget(String property, String value);
-	double minBudget(String property, String value);
+	double maxBudget(String property);
+	double minBudget(String property);
 	double avgBudget(String property, String value);
 	double devstdBudget(String property, String value);
 	

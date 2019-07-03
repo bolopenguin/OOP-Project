@@ -43,7 +43,7 @@ public class BudgetService implements IBudgetService {
 		budgets = ParserCSV.getBudgets();
 	}
 	
-	public static void setMetadata() {
+	public static void setMetadata(ArrayList<Metadata> metadata) {
 		metadata.add(new Metadata("lei_code","Legal Entity Identifier Code","String"));
 		metadata.add(new Metadata("nsa","Country","String"));
 		metadata.add(new Metadata("period","Periodo di Riferimento","Integer"));
@@ -51,25 +51,22 @@ public class BudgetService implements IBudgetService {
 		metadata.add(new Metadata("label","Label of the Budget Item","String"));
 		metadata.add(new Metadata("amount","Budget Item Amount","Double"));
 		metadata.add(new Metadata("n_quarters","Trimestre di Riferimento","Integer"));
+		BudgetService.metadata = metadata;
 		}
-	
-	//implementazione delle operazioni
-	
-	
-
 
 	@Override
 	public ArrayList<Budget> getBudget() {
-		// TODO Auto-generated method stub
-		return null;
+		return budgets;
 	}
 	
 	@Override
 	public ArrayList<Metadata> getMetadata() {
-		// TODO Auto-generated method stub
-		return null;
+		return metadata;
 	}
 
+	
+	//implementazione delle operazioni
+	
 	@Override
 	public double sumBudget(String property, String value) {
 		// TODO Auto-generated method stub
@@ -77,13 +74,13 @@ public class BudgetService implements IBudgetService {
 	}
 
 	@Override
-	public double maxBudget(String property, String value) {
+	public double maxBudget(String property) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public double minBudget(String property, String value) {
+	public double minBudget(String property) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

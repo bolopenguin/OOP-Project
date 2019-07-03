@@ -1,10 +1,11 @@
 package europeBanks.spring;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import europeBanks.spring.model.*;
 import europeBanks.spring.service.BudgetService;
 
 //va a prendere gli altri package per non considerare solo quello corrente
@@ -16,7 +17,7 @@ public class Application {
     		try {
     			BudgetService.setBudgets();
 				System.out.println("Droga");
-    		//	BudgetService.setMetadata();
+				BudgetService.setMetadata(new ArrayList<Metadata>());
     		} catch (IOException e) {
     			e.printStackTrace();
     		}
