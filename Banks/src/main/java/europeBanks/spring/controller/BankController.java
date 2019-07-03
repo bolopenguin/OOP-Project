@@ -55,7 +55,7 @@ public class BankController {
 	}
 	
 	@RequestMapping(value = "/budget/average/property/{property}/value/{value}", method = RequestMethod.GET)
-	public String averageBudget(@PathVariable("property") String property, @PathVariable("value") String value )
+	public String avgBudget(@PathVariable("property") String property, @PathVariable("value") String value )
 	{
 		JSONObject average = new JSONObject();
 		double avg = service.avgBudget(property, value);
@@ -67,29 +67,27 @@ public class BankController {
 	 * Restituisce la somma dei budgets delle attivita' con variabile lei_code e  valore di lei_code scelto dall'utente
 	 */
 	@RequestMapping(value = "/budget/sum/property/{property}/value/{value}", method = RequestMethod.GET)
-	public ResponseEntity<?> sumBudget(@PathVariable("property")String property , @PathVariable("value") String value) {
-		double response = service.sumBudget(property, value);
-		if (response == 0) {
-			System.out.println("Error request");
-			return new ResponseEntity(new Error("Error request, property : " + property +" with value : "+value+ " not found"), HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<Double>(response, HttpStatus.OK);
+	public String sumBudget(@PathVariable("property")String property , @PathVariable("value") String value) 
+	{
+		JSONObject addiction = new JSONObject();
+		double sum = service.sumBudget(property, value);
+		addiction.put("Addiction", sum);
+		return addiction.toString();
 
 	}
 	
 	/**
-	 * Restituisce il minimo di tutti i budgets con variabile scelta dall'utente
-	 
+	 * Restituisce il
+	 */
+	@RequestMapping(value = "/budget/count/property/{property}/value/{value}", method = RequestMethod.GET)
+	public String countBudget(@PathVariable("property") String property, @PathVariable("value") String value )
+	{
+		JSONObject average = new JSONObject();
+		double count = service.countBudget(property, value);
+		average.put("Average", count);
+		return average.toString();
+	}
+	
 
-	@RequestMapping(value = "/budget/min/{property}", method = RequestMethod.GET)
-	public ResponseEntity<?> minBudget(@PathVariable("property")String property) {
-		logger.info("Counting Business with property {} ", property);
-		String response = service.minBudget(property);
-		if (response.isEmpty()) {
-			logger.error("Error request, variable {}  with value {} not found.", property);
-			return new ResponseEntity(HttpStatus.NO_CONTENT);		
-		}
-		return new ResponseEntity<String>(response, HttpStatus.OK);
-	}*/
 	
 }

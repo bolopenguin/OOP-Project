@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import europeBanks.spring.model.*;
 import europeBanks.spring.parser.*;
-import javaExamProject.spring.model.Business;
+
 
 
 /**
@@ -78,48 +78,49 @@ public class BudgetService implements IBudgetService {
 	public double sumBudget(String property, String value) {
 		double n = 0;
 		switch (property) {
-			case "lei_code":
+			case "lei_code":{
 
 				for(Budget b : budgets)
 
 				if(b.getLei_code().equals(value))
 					n += b.getAmount();
-				break;
+			}break;
 			
-			case "nsa":
+			case "nsa":{
 				for(Budget b : budgets)
 
 					if(b.getNsa().equals(value))
 						n += b.getAmount();
-					break;
-					
-			case "period":
+			}break;
+			
+			case "period":{
 				for(Budget b : budgets)
 
 					if(Integer.toString(b.getPeriod()).equals(value))
 						n += b.getAmount();
-					break;
+			}break;
 					
-			case "item":
+			case "item":{
 				for(Budget b : budgets)
 
 					if(Double.toString(b.getItem()).equals(value))
 						n += b.getAmount();
-					break;
-					
-			case "label":
+			}break;
+				
+			case "label":{
 				for(Budget b : budgets)
 
 					if(b.getLabel().equals(value))
 						n += b.getAmount();
-					break;
+			}break;
 				
-			case "n_quarters":
+			case "n_quarters":{
 				for(Budget b : budgets)
 
 					if(Integer.toString(b.getN_quarters()).equals(value))
 						n += b.getAmount();
-					break;
+			}break;
+					
 		}	
 		return n;
 	}
@@ -187,66 +188,66 @@ public class BudgetService implements IBudgetService {
 	public int countBudget(String property, String value) {
 		int n= 0;
 		switch(property) {
-		case "lei_code":
+		case "lei_code":{
 			n = 0; 
 			for(Budget b : budgets) {
 				if (b.getLei_code().equals(value)) {
 					n++;	
 				}
 			}
-			break;
+		}break;
 
-		case "nsa":
+		case "nsa":{
 			n = 0;
 			for(Budget b : budgets) {
 				if (b.getNsa().equals(value)) {
 					n++;
 				}
 			}
-			break;
+		}break;
 
-		case "period":
+		case "period":{
 			n = 0;
 			for(Budget b : budgets) {
 				if (b.getPeriod() == Integer.parseInt(value)) {
 					n++;
 				}
 			}
-			break;
+		}break;
 
-		case "item":
+		case "item":{
 			n = 0;
 			for(Budget b : budgets) {
 				if(b.getItem() == Integer.parseInt(value))
 					n++;
 			}
-			break;
+		}break;
 			
-		case "label":
+		case "label":{
 			n = 0;
 			for(Budget b : budgets) {
 				if (b.getLabel().equals(value)) {
 					n++;
 				}
 			}
-			break;
+		}break;
 			
-		case "amount":
+		case "amount":{
 			n = 0;
 			for(Budget b : budgets) {
 				if (b.getAmount() == Double.parseDouble(value)) {
 					n++;
 				}
 			}
-			break;
+		}break;
 			
-		case "n_quarters":
+		case "n_quarters":{
 			n = 0;
 			for(Budget b : budgets) {
 				if(b.getN_quarters() == Integer.parseInt(value))
 					n++;
 			}
-			break;
+		}break;
 			
 		}
 		return n;
@@ -255,9 +256,9 @@ public class BudgetService implements IBudgetService {
 	/**
 	 *restituisce l'oggetto messaggio valorizzato da una stringa che specifica  la variabile, scelta dall'utente, con meno business (min)
 	 * @return message,  risposta all'utente
-	 */
+	 
 	public double minBudget(String property, String value) {
-		double min = 0;
+		double[] el = new double[];
 		
 		int tmpInt = 0;
 		double tmpDbl = 0;
@@ -307,7 +308,7 @@ public class BudgetService implements IBudgetService {
 		}
 		double avg = sum/n;
 		return avg;
-	}
+	}*/
 
 	@Override
 	public double avgBudget(String property, String value) {
@@ -406,6 +407,18 @@ public class BudgetService implements IBudgetService {
 
 	@Override
 	public ArrayList<Budget> andFilter(String property, String values) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double minBudget(String property, String value) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ArrayList<Budget> getBudgetByProperty(String property, String value) {
 		// TODO Auto-generated method stub
 		return null;
 	}
