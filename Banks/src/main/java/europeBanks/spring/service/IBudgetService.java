@@ -25,12 +25,12 @@ public interface IBudgetService {
 	 */
 	
 	double sumBudget(String property, String value);
-	double maxBudget(String property);
-	double minBudget(String property);
+	double maxBudget(String property,  String value);
+	double minBudget(String property, String value);
 	double avgBudget(String property, String value);
 	double devstdBudget(String property, String value);
 	
-	int countBank(String property, String value);
+	int countBudget(String property, String value);
 	
 	ArrayList <Budget> getBudgetByProperty(String property, String value);
 	
