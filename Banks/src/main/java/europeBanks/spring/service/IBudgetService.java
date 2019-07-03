@@ -24,13 +24,13 @@ public interface IBudgetService {
 	 * statistiche
 	 */
 	
-	double sumBudget(String property, String value);
-	double maxBudget(String property,  String value);
-	double minBudget(String property, String value);
-	double avgBudget(String property, String value);
-	double devstdBudget(String property, String value);
+	double sumBudget(String property);
+	double maxBudget(String property);
+	double minBudget(String property);
+	double avgBudget(String property);
+	double devstdBudget(String property);
 	
-	int countBudget(String property, String value);
+	int countBudget(String property);
 	
 	ArrayList <Budget> getBudgetByProperty(String property, String value);
 	
