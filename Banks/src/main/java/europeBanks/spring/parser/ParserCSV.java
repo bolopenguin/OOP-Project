@@ -66,28 +66,49 @@ public class ParserCSV {
 	/**
 	 * metodo che prende in ingresso l'array list che contiene array i cui elementi sono stringhe che identificano
 	 * le diverse componenti della sigola riga.
-	 * il metodo restituisce un array list non più di array di stringhe ma un array list di oggetti Budget
+	 * il metodo restituisce un array list non piÃ¹ di array di stringhe ma un array list di oggetti Budget
 	 * inoltre qui vengono fatti i controlli per verificare che la riga sia consistente prima di salvarla come un oggetto Budget
 	 * @param records
 	 */
 	public static void parserCSV( List<List<String>> records) {
 		ArrayList <Budget> template = new ArrayList <Budget>();
 		List<String> line;
-		for(int i = 1; i< records.size() ; i++) {
+		String tmp; 
+		
+		for(int i = 1; i< records.size() ; i++) {			
 			line = records.get(i);
+			if(line.size() > 7) { 
+				tmp = line.get(4);
+				for(int j = 5 ; j < line.size() - 2; j++) {
+					tmp = tmp + "," + line.get(j);
+				}
+				System.out.println(tmp);
 				Budget b = new Budget(
 						line.get(0).isEmpty() ? "LeiCodeNotFound" : line.get(0),
 						line.get(1).isEmpty() ? "NsaCodeNotFound" : line.get(1),
 						line.get(2).isEmpty() ? 0 : Integer.parseInt(line.get(2)),
 						line.get(3).isEmpty() ? 0 : Integer.parseInt(line.get(3)),
-						line.get(4).replace("", "").isEmpty() ? "LabelNotFound" : line.get(4),
+						line.get(4).isEmpty() ? "LabelNotFound" : tmp,
+						line.get(5).isEmpty() ? 0 : Double.parseDouble(line.get(line.size()-2)),
+						line.get(6).isEmpty() ? 0 : Integer.parseInt(line.get(line.size()-1))
+						);
+				template.add(b);
+				
+			}else {
+				Budget b = new Budget(
+						line.get(0).isEmpty() ? "LeiCodeNotFound" : line.get(0),
+						line.get(1).isEmpty() ? "NsaCodeNotFound" : line.get(1),
+						line.get(2).isEmpty() ? 0 : Integer.parseInt(line.get(2)),
+						line.get(3).isEmpty() ? 0 : Integer.parseInt(line.get(3)),
+						line.get(4).isEmpty() ? "LabelNotFound" : line.get(4),
 						line.get(5).isEmpty() ? 0 : Double.parseDouble(line.get(5)),
 						line.get(6).isEmpty() ? 0 : Integer.parseInt(line.get(6))
 						);
 				template.add(b);
-				
 			}
-		setBudgets(template);
+				
+		}
+		budgets = template;
 	}	
 }
 
