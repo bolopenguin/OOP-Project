@@ -3,6 +3,7 @@ package europeBanks.spring.controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import europeBanks.spring.model.*;
@@ -46,15 +47,15 @@ public class BankController {
 	 * @return array list dei budget trovati
 	 */
 	
-	@RequestMapping(value = "/budget/property/{property}/value/{value}", method = RequestMethod.GET)
-	public ArrayList<Budget> budgetByProperty(@PathVariable("property") String property, @PathVariable("value") String value )
+	@RequestMapping(value = "/budget", method = RequestMethod.GET)
+	public ArrayList<Budget> budgetByProperty(@RequestParam("property") String property, @RequestParam("value") String value )
 	{
 		ArrayList<Budget> budgetsByProperty = service.getBudgetByProperty(property, value);
 		return budgetsByProperty;
 	}
 	
-	@RequestMapping(value = "/budget/average/property/{property}", method = RequestMethod.GET)
-	public String avgBudget(@PathVariable("property") String property)
+	@RequestMapping(value = "/budget/average", method = RequestMethod.GET)
+	public String avgBudget(@RequestParam("property") String property)
 	{
 		JSONObject average = new JSONObject();
 		double avg = service.avgBudget(property);
@@ -65,8 +66,8 @@ public class BankController {
 	/**
 	 * Restituisce la somma dei budgets delle attivita' con variabile lei_code e  valore di lei_code scelto dall'utente
 	 */
-	@RequestMapping(value = "/budget/sum/property/{property}", method = RequestMethod.GET)
-	public String sumBudget(@PathVariable("property")String property) 
+	@RequestMapping(value = "/budget/sum", method = RequestMethod.GET)
+	public String sumBudget(@RequestParam("property")String property) 
 	{
 		JSONObject addiction = new JSONObject();
 		double sum = service.sumBudget(property);
@@ -78,30 +79,30 @@ public class BankController {
 	/**
 	 * Restituisce il
 	 */
-	@RequestMapping(value = "/budget/count/property/{property}", method = RequestMethod.GET)
-	public String countBudget(@PathVariable("property") String property)
+	@RequestMapping(value = "/budget/count", method = RequestMethod.GET)
+	public String countBudget(@RequestParam("property") String property)
 	{
 		JSONObject counter = new JSONObject();
 		double count = service.countBudget(property);
-		counter.put("Average", count);
+		counter.put("Count", count);
 		return counter.toString();
 	}
 	
-	@RequestMapping(value = "/budget/max/property/{property}", method = RequestMethod.GET)
-	public String maxBudget(@PathVariable("property") String property)
+	@RequestMapping(value = "/budget/max", method = RequestMethod.GET)
+	public String maxBudget(@RequestParam("property") String property)
 	{
 		JSONObject max = new JSONObject();
-		double maximum = service.countBudget(property);
-		max.put("Average", maximum);
+		double maximum = service.maxBudget(property);
+		max.put("Max", maximum);
 		return max.toString();
 	}
 	
-	@RequestMapping(value = "/budget/min/property/{property}", method = RequestMethod.GET)
-	public String minBudget(@PathVariable("property") String property)
+	@RequestMapping(value = "/budget/min", method = RequestMethod.GET)
+	public String minBudget(@RequestParam("property") String property)
 	{
 		JSONObject min = new JSONObject();
-		double minimum = service.countBudget(property);
-		min.put("Average", minimum);
+		double minimum = service.minBudget(property);
+		min.put("Min", minimum);
 		return min.toString();
 	}
 

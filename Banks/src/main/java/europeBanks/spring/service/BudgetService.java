@@ -152,19 +152,19 @@ public class BudgetService implements IBudgetService {
 				if(budgets.get(i).getNsa() != null) counter++;
 			} break;
 			case "period":{
-				if(budgets.get(i).getPeriod() != -1) counter++;
+				 counter++;
 			} break;
 			case "item":{
-				if(budgets.get(i).getItem() != -1) counter++;
+				 counter++;
 			} break;
 			case "label":{
 				if(budgets.get(i).getLabel() != null) counter++;
 			} break;
 			case "amount":{
-				if(budgets.get(i).getAmount() != -1) counter++;
+				counter++;
 			} break;
 			case "n_quarters":{
-				if(budgets.get(i).getN_quarters() != -1) counter++;
+				counter++;
 			} break;
 			default: break;
 			}
@@ -204,6 +204,100 @@ public class BudgetService implements IBudgetService {
 		double avg = sum/n;
 		return avg;
 	}
+	
+	@Override
+	public double minBudget(String property) {
+		double min = 0;
+		
+		switch(property) {
+			case "period":{
+				min = budgets.get(0).getPeriod();
+				for(int i = 1; i < budgets.size(); i++) {
+					// -1 vuol dire che il parametro non è presente e quindi non va considerato
+					if(budgets.get(i).getPeriod() < min ) 
+						min = Double.valueOf(budgets.get(i).getPeriod());
+				}
+			} break;
+			case "item":{
+				min = budgets.get(0).getItem();
+				for(int i = 1; i < budgets.size(); i++) {
+					// -1 vuol dire che il parametro non è presente e quindi non va considerato
+					if(budgets.get(i).getItem() < min ) 
+						min = Double.valueOf(budgets.get(i).getItem());
+				}
+			} break;
+			case "amount":{
+				min = budgets.get(0).getAmount();
+				for(int i = 1; i < budgets.size(); i++) {
+					// -1 vuol dire che il parametro non è presente e quindi non va considerato
+					if(budgets.get(i).getAmount() < min ) 
+						min = budgets.get(i).getAmount();
+				}
+			} break;
+			case "n_quarters":{
+				min = budgets.get(0).getN_quarters();
+				for(int i = 1; i < budgets.size(); i++) {
+					// -1 vuol dire che il parametro non è presente e quindi non va considerato
+					if(budgets.get(i).getN_quarters() < min ) 
+						min = Double.valueOf(budgets.get(i).getN_quarters());
+				}
+			} break;
+			default: break;
+		}
+
+		// gestire errore
+		return min;
+	}
+
+	@Override
+	public ArrayList<Budget> getBudgetByProperty(String property, String value) {
+		ArrayList<Budget> tmp = new ArrayList<Budget>();
+		int tmpInt;
+		double tmpDbl;
+		
+		for(int i = 0; i < budgets.size(); i++) {
+			switch(property) {
+			case "lei_code":{
+				if(budgets.get(i).getLei_code().equals(value))
+					tmp.add(budgets.get(i));
+			} break;
+			case "nsa":{
+				if(budgets.get(i).getNsa().equals(value))
+					tmp.add(budgets.get(i));
+			}break;
+			case "period":{
+				tmpInt = Integer.parseInt(value);
+				if(budgets.get(i).getPeriod() == tmpInt)
+					tmp.add(budgets.get(i));
+			} break;
+			case "item":{
+				tmpInt = Integer.parseInt(value);
+				if(budgets.get(i).getItem() == tmpInt)
+					tmp.add(budgets.get(i));
+			} break;
+			case "label":{
+				if(budgets.get(i).getLabel().equals(value))
+					tmp.add(budgets.get(i));
+			}break;
+			case "amount":{
+				tmpDbl = Double.parseDouble(value);
+				if(budgets.get(i).getAmount() == tmpDbl)
+					tmp.add(budgets.get(i));
+			} break;
+			case "n_quarters":{
+				tmpInt = Integer.parseInt(value);
+				if(budgets.get(i).getN_quarters() == tmpInt)
+					tmp.add(budgets.get(i));
+			} break;
+			default: break;
+			}
+		}
+		
+		return tmp;
+	}
+
+	//implementazione dei filtri
+	
 
 	@Override
 	public double devstdBudget(String property) {
@@ -250,56 +344,7 @@ public class BudgetService implements IBudgetService {
 		return null;
 	}
 
-	@Override
-	public double minBudget(String property) {
-		double min = 0;
-		
-		switch(property) {
-			case "period":{
-				min = budgets.get(0).getPeriod();
-				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
-					if(budgets.get(i).getPeriod() < min && budgets.get(i).getPeriod() != -1 ) 
-						min = Double.valueOf(budgets.get(i).getPeriod());
-				}
-			} break;
-			case "item":{
-				min = budgets.get(0).getItem();
-				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
-					if(budgets.get(i).getItem() < min && budgets.get(i).getItem() != -1 ) 
-						min = Double.valueOf(budgets.get(i).getItem());
-				}
-			} break;
-			case "amount":{
-				min = budgets.get(0).getAmount();
-				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
-					if(budgets.get(i).getAmount() < min && budgets.get(i).getAmount() != -1 ) 
-						min = budgets.get(i).getAmount();
-				}
-			} break;
-			case "n_quarters":{
-				min = budgets.get(0).getN_quarters();
-				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
-					if(budgets.get(i).getN_quarters() < min && budgets.get(i).getN_quarters() != -1 ) 
-						min = Double.valueOf(budgets.get(i).getN_quarters());
-				}
-			} break;
-			default: break;
-		}
 
-		// gestire errore
-		return min;
-	}
-
-	@Override
-	public ArrayList<Budget> getBudgetByProperty(String property, String value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 	
 }

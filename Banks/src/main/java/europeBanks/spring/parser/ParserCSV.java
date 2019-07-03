@@ -85,11 +85,11 @@ public class ParserCSV {
 				Budget b = new Budget(
 						line.get(0).isEmpty() ? null : line.get(0),
 						line.get(1).isEmpty() ? null : line.get(1),
-						line.get(2).isEmpty() ? -1 : Integer.parseInt(line.get(2)),
-						line.get(3).isEmpty() ? -1 : Integer.parseInt(line.get(3)),
+						line.get(2).isEmpty() ? 0 : Integer.parseInt(line.get(2)),
+						line.get(3).isEmpty() ? 0 : Integer.parseInt(line.get(3)),
 						line.get(4).isEmpty() ? null : tmp,
-						line.get(5).isEmpty() ? -1 : Double.parseDouble(line.get(line.size()-2)),
-						line.get(6).isEmpty() ? -1 : Integer.parseInt(line.get(line.size()-1))
+						line.get(5).isEmpty() ? 0 : Double.parseDouble(line.get(line.size()-2)),
+						line.get(6).isEmpty() ? 0 : Integer.parseInt(line.get(line.size()-1))
 						);
 				template.add(b);
 				
