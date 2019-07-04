@@ -52,7 +52,7 @@ public class BankController {
 	@RequestMapping(value = "/budget", method = RequestMethod.GET)
 	public ArrayList<Budget> budgetByProperty(@RequestParam("property") String property, @RequestParam("value") String value )
 	{
-		ArrayList<Budget> budgetsByProperty = service.getBudgetByProperty(property, value);
+		ArrayList<Budget> budgetsByProperty = service.getBudgetByProperty(property.toLowerCase(), value);
 		return budgetsByProperty;
 	}
 	
@@ -62,7 +62,7 @@ public class BankController {
 		JSONObject average = new JSONObject();
 		double avg;
 		try {
-			avg = service.avgBudget(property);
+			avg = service.avgBudget(property.toLowerCase());
 			average.put("average", avg);
 		} catch (Exception e) {
 			average.put("error", "Could not find the input Property");
@@ -80,7 +80,7 @@ public class BankController {
 		JSONObject addiction = new JSONObject();
 		double sum;
 		try {
-			sum = service.sumBudget(property);
+			sum = service.sumBudget(property.toLowerCase());
 			addiction.put("sum", sum);
 		} catch (Exception e) {
 			addiction.put("error", "Could not find the input Property");
@@ -99,7 +99,7 @@ public class BankController {
 		JSONObject counter = new JSONObject();
 		double count;
 		try {
-			count = service.countBudget(property);
+			count = service.countBudget(property.toLowerCase());
 			counter.put("count", count);
 		} catch (Exception e) {
 			counter.put("error", "Could not find the input Property");
@@ -114,7 +114,7 @@ public class BankController {
 		JSONObject max = new JSONObject();
 		double maximum;
 		try {
-			maximum = service.maxBudget(property);
+			maximum = service.maxBudget(property.toLowerCase());
 			max.put("max", maximum);
 		} catch (Exception e) {
 			max.put("error", "Could not find the input Property");
@@ -129,7 +129,7 @@ public class BankController {
 		JSONObject min = new JSONObject();
 		double minimum;
 		try {
-			minimum = service.minBudget(property);
+			minimum = service.minBudget(property.toLowerCase());
 			min.put("min", minimum);
 		} catch (Exception e) {
 			min.put("error", "Could not find the input Property");
@@ -144,7 +144,7 @@ public class BankController {
 		JSONObject devstd = new JSONObject();
 		double deviation;
 		try {
-			deviation = service.devstdBudget(property);
+			deviation = service.devstdBudget(property.toLowerCase());
 			devstd.put("devstd", deviation);
 		} catch (Exception e) {
 			devstd.put("error", "Could not find the input Property");
@@ -158,7 +158,7 @@ public class BankController {
 	{
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		try {
-			map = service.getUniqueString(property);
+			map = service.getUniqueString(property.toLowerCase());
 		} catch (Exception e) {
 			map.put("error: Could not find the input Property", 0);	
 		}
