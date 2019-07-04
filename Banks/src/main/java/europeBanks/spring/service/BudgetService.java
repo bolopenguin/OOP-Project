@@ -77,7 +77,7 @@ public class BudgetService implements IBudgetService {
 	 * @param n, totale degli amount
 	 * 
 	 */
-	public double sumBudget(String property) {
+	public double sumBudget(String property) throws Exception {
 		double sum = 0;
 		int n = 0;
 		
@@ -116,7 +116,11 @@ public class BudgetService implements IBudgetService {
 		}
 		
 		//gestire errore
-		return sum;
+		
+		if(n == 0) 
+			throw new Exception();
+		else
+			return sum;
 	}
 
 	@Override
@@ -375,7 +379,7 @@ public class BudgetService implements IBudgetService {
 			for(Budget b : budgets){
 				if(b.getPeriod()== 0) {
 					continue;
-
+					
 				}else {
 					num += Math.pow((b.getPeriod() - avg), 2);
 					count++;
@@ -413,7 +417,7 @@ public class BudgetService implements IBudgetService {
 				}
 			}
 		}break;
-
+		default: break;
 
 		}
 

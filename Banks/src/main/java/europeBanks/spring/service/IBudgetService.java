@@ -22,9 +22,10 @@ public interface IBudgetService {
 	
 	/**
 	 * statistiche
+	 * @throws Exception 
 	 */
 	
-	double sumBudget(String property);
+	double sumBudget(String property) throws Exception;
 	double maxBudget(String property);
 	double minBudget(String property);
 	double avgBudget(String property);

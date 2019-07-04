@@ -70,8 +70,14 @@ public class BankController {
 	public String sumBudget(@RequestParam("property")String property) 
 	{
 		JSONObject addiction = new JSONObject();
-		double sum = service.sumBudget(property);
-		addiction.put("Addiction", sum);
+		double sum;
+		try {
+			sum = service.sumBudget(property);
+			addiction.put("sum", sum);
+		} catch (Exception e) {
+			addiction.put("error", "Could not find the input Property");
+		}
+		
 		return addiction.toString();
 
 	}
