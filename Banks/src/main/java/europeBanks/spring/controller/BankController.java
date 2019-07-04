@@ -58,8 +58,14 @@ public class BankController {
 	public String avgBudget(@RequestParam("property") String property)
 	{
 		JSONObject average = new JSONObject();
-		double avg = service.avgBudget(property);
-		average.put("average", avg);
+		double avg;
+		try {
+			avg = service.avgBudget(property);
+			average.put("average", avg);
+		} catch (Exception e) {
+			average.put("error", "Could not find the input Property");
+		}
+		
 		return average.toString();
 	}
 
@@ -89,8 +95,14 @@ public class BankController {
 	public String countBudget(@RequestParam("property") String property)
 	{
 		JSONObject counter = new JSONObject();
-		double count = service.countBudget(property);
-		counter.put("count", count);
+		double count;
+		try {
+			count = service.countBudget(property);
+			counter.put("count", count);
+		} catch (Exception e) {
+			counter.put("count", "Could not find the input Property or is empty");
+		}
+		
 		return counter.toString();
 	}
 	
@@ -98,8 +110,14 @@ public class BankController {
 	public String maxBudget(@RequestParam("property") String property)
 	{
 		JSONObject max = new JSONObject();
-		double maximum = service.maxBudget(property);
-		max.put("max", maximum);
+		double maximum;
+		try {
+			maximum = service.maxBudget(property);
+			max.put("max", maximum);
+		} catch (Exception e) {
+			max.put("error", "Could not find the input Property");
+		}
+		
 		return max.toString();
 	}
 	
@@ -107,8 +125,14 @@ public class BankController {
 	public String minBudget(@RequestParam("property") String property)
 	{
 		JSONObject min = new JSONObject();
-		double minimum = service.minBudget(property);
-		min.put("min", minimum);
+		double minimum;
+		try {
+			minimum = service.minBudget(property);
+			min.put("min", minimum);
+		} catch (Exception e) {
+			min.put("error", "Could not find the input Property");
+		}
+		
 		return min.toString();
 	}
 	
@@ -116,8 +140,14 @@ public class BankController {
 	public String devstdBudget(@RequestParam("property") String property)
 	{
 		JSONObject devstd = new JSONObject();
-		double deviation = service.devstdBudget(property);
-		devstd.put("devstd", deviation);
+		double deviation;
+		try {
+			deviation = service.devstdBudget(property);
+			devstd.put("devstd", deviation);
+		} catch (Exception e) {
+			devstd.put("error", "Could not find the input Property");
+		}
+		
 		return devstd.toString();
 	}
 

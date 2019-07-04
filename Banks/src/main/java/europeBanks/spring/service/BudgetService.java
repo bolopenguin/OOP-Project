@@ -124,7 +124,7 @@ public class BudgetService implements IBudgetService {
 	}
 
 	@Override
-	public double maxBudget(String property) {
+	public double maxBudget(String property) throws Exception{
 		double max = 0;
 		int n = 0;
 
@@ -162,8 +162,12 @@ public class BudgetService implements IBudgetService {
 		
 		}
 		
-		// gestire errore
-		return max;
+		//gestire errore
+		
+		if(n == 0) 
+			throw new Exception();
+		else
+			return max;
 	}
 	
 	/** @param variable, variabile su cui si effettua il conteggio di attivita'
@@ -172,23 +176,11 @@ public class BudgetService implements IBudgetService {
 	 */
 
 	@Override
-	public int countBudget(String property) {
+	public int countBudget(String property) throws Exception {
 		int counter = 0;
 		
 
 		switch(property) {
-		case "lei_code":{
-			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getLei_code() != null) 
-					counter++;
-			}
-		} break;
-		case "nsa":{
-			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getNsa() != null) 
-					counter++;
-			}		
-		} break;
 		case "period":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getPeriod() != 0) {
@@ -201,11 +193,6 @@ public class BudgetService implements IBudgetService {
 				if(budgets.get(i).getItem() != 0) {
 					counter++;
 				}			
-			}
-		} break;
-		case "label":{
-			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getLabel() != null) counter++;
 			}
 		} break;
 		case "amount":{
@@ -224,11 +211,15 @@ public class BudgetService implements IBudgetService {
 		
 	}
 		//gestire errore
-		return counter;
+		
+		if(counter == 0) 
+			throw new Exception();
+		else
+			return counter;
 	}
 
 	@Override
-	public double avgBudget(String property) {
+	public double avgBudget(String property) throws Exception{
 		double sum = 0;
 		int n = 0;
 		
@@ -267,13 +258,17 @@ public class BudgetService implements IBudgetService {
 		default: break;
 	
 	}
-		//gestire errore
 		double avg = sum/n;
-		return avg;
+		//gestire errore
+		if(n == 0) 
+			throw new Exception();
+		else
+			return avg;
+
 	}
 	
 	@Override
-	public double minBudget(String property) {
+	public double minBudget(String property) throws Exception{
 		double min = 0;
 		int n = 0;
 		
@@ -313,8 +308,11 @@ public class BudgetService implements IBudgetService {
 			default: break;
 		}
 
-		// gestire errore
-		return min;
+		//gestire errore
+		if(n == 0) 
+			throw new Exception();
+		else
+			return min;
 	}
 
 	@Override
@@ -366,7 +364,7 @@ public class BudgetService implements IBudgetService {
 	
 
 	@Override
-	public double devstdBudget(String property) {
+	public double devstdBudget(String property) throws Exception{
 		double count=0.0;
 
 		double avg = avgBudget(property);
@@ -422,7 +420,11 @@ public class BudgetService implements IBudgetService {
 		}
 
 		double devStdB = Math.sqrt( num / count);
-		return devStdB; 
+		//gestire errore
+		if(count == 0) 
+			throw new Exception();
+		else
+			return devStdB; 
 	}
 
 

@@ -26,12 +26,12 @@ public interface IBudgetService {
 	 */
 	
 	double sumBudget(String property) throws Exception;
-	double maxBudget(String property);
-	double minBudget(String property);
-	double avgBudget(String property);
-	double devstdBudget(String property);
+	double maxBudget(String property) throws Exception;
+	double minBudget(String property) throws Exception;
+	double avgBudget(String property) throws Exception;
+	double devstdBudget(String property) throws Exception;
 	
-	int countBudget(String property);
+	int countBudget(String property) throws Exception;
 	
 	ArrayList <Budget> getBudgetByProperty(String property, String value);
 	
