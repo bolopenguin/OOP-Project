@@ -10,6 +10,8 @@ import europeBanks.spring.model.*;
 import europeBanks.spring.service.BudgetService;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.json.JSONObject;
 
@@ -149,6 +151,14 @@ public class BankController {
 		}
 		
 		return devstd.toString();
+	}
+	
+	@RequestMapping(value = "/budget/unique", method = RequestMethod.GET)
+	public Map<String, Integer> getUniqueString(@RequestParam("property") String property)
+	{
+		Map<String, Integer> map = service.getUniqueString(property);
+		
+		return map;
 	}
 
 	

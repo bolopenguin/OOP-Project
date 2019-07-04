@@ -1,6 +1,7 @@
 package europeBanks.spring.service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import europeBanks.spring.model.*;
 
@@ -34,6 +35,7 @@ public interface IBudgetService {
 	int countBudget(String property) throws Exception;
 	
 	ArrayList <Budget> getBudgetByProperty(String property, String value);
+	Map<String, Integer> getUniqueString(String property);
 	
 	/**
 	 * filtri

@@ -2,7 +2,9 @@ package europeBanks.spring.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -427,6 +429,33 @@ public class BudgetService implements IBudgetService {
 			return devStdB; 
 	}
 
+	@Override
+	public Map<String, Integer> getUniqueString(String property) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		int count = 0;
+
+		
+		switch(property) {
+			case "lei_code":{
+				for(int i = 0; i < budgets.size(); i++) {
+					map.put(budgets.get(i).getLei_code(), count++);
+				}
+				
+			} break;
+			case "nsa":{
+				for(int i = 0; i < budgets.size(); i++) {
+					map.put(budgets.get(i).getNsa(), count++);
+				}
+			} break;
+			case "label":{
+				for(int i = 0; i < budgets.size(); i++) {
+					map.put(budgets.get(i).getLabel(), count++);
+				}
+				
+			} break;
+		}
+		return map;
+	}
 
 	//implementazione dei filtri
 	
