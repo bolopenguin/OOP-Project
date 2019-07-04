@@ -56,6 +56,8 @@ public class BudgetService implements IBudgetService {
 		BudgetService.metadata = metadata;
 		}
 
+	
+	
 	@Override
 	public ArrayList<Budget> getBudget() {
 		return budgets;
@@ -79,27 +81,40 @@ public class BudgetService implements IBudgetService {
 		double sum = 0;
 		int n = 0;
 		
-		for(int i = 0; i < budgets.size(); i++) {
-			switch(property) {
+		switch(property) {
 			case "period":{
-					sum += budgets.get(i).getPeriod();
-					n++;
+				for(int i = 0; i < budgets.size(); i++) {
+					if(budgets.get(i).getPeriod() != 0) {
+						sum += budgets.get(i).getPeriod();
+						n++;
+					}
+				}
 			} break;
 			case "item":{
-				sum += budgets.get(i).getItem();
-				n++;
+				for(int i = 0; i < budgets.size(); i++) {
+					if(budgets.get(i).getItem() != 0) {
+						sum += budgets.get(i).getItem();
+						n++;
+					}
+				}
 			} break;
 			case "amount":{
-				sum += budgets.get(i).getAmount();
-				n++;
+				for(int i = 0; i < budgets.size(); i++) {
+					sum += budgets.get(i).getAmount();
+					n++;
+				}
 			} break;
 			case "n_quarters":{
-				sum += budgets.get(i).getN_quarters();
-				n++;
+				for(int i = 0; i < budgets.size(); i++) {
+					if(budgets.get(i).getN_quarters() != 0) {
+						sum += budgets.get(i).getN_quarters();
+						n++;
+					}
+				}
 			} break;
 			default: break;
-			}
 		}
+		
 		//gestire errore
 		return sum;
 	}
@@ -107,29 +122,42 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public double maxBudget(String property) {
 		double max = 0;
-		
-		
-		for(int i = 0; i < budgets.size(); i++) {
-			switch(property) {
-			case "period":{
-					if(budgets.get(i).getPeriod()> max) 
-						max = Double.valueOf(budgets.get(i).getPeriod());
-			} break;
-			case "item":{
-					if(budgets.get(i).getItem()> max) 
-						max = Double.valueOf(budgets.get(i).getItem());
-			} break;
-			case "amount":{
-					if(budgets.get(i).getAmount()> max) 
-						max = budgets.get(i).getAmount();
-			} break;
-			case "n_quarters":{
-					if(budgets.get(i).getN_quarters()> max) 
-						max = Double.valueOf(budgets.get(i).getN_quarters());
-			} break;
-			default: break;
+		int n = 0;
+
+		switch(property) {
+		case "period":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getPeriod() > max && budgets.get(i).getPeriod() != 0) 
+					max = Double.valueOf(budgets.get(i).getPeriod());
+					n++;
 			}
+		} break;
+		case "item":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getItem()> max && budgets.get(i).getItem() != 0) 
+					max = Double.valueOf(budgets.get(i).getItem());
+					n++;
+			}
+		} break;
+		case "amount":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getAmount()> max) 
+					max = Double.valueOf(budgets.get(i).getAmount());
+					n++;
+			}
+		} break;
+		case "n_quarters":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getN_quarters()> max && budgets.get(i).getN_quarters() != 0) 
+					max = Double.valueOf(budgets.get(i).getN_quarters());
+					n++;
+			}
+		} break;
+		
+		default: break;
+		
 		}
+		
 		// gestire errore
 		return max;
 	}
@@ -143,32 +171,54 @@ public class BudgetService implements IBudgetService {
 	public int countBudget(String property) {
 		int counter = 0;
 		
-		for(int i = 0; i < budgets.size(); i++) {
-			switch(property) {
-			case "lei_code":{
-				if(budgets.get(i).getLei_code() != null) counter++;
-			} break;
-			case "nsa":{
-				if(budgets.get(i).getNsa() != null) counter++;
-			} break;
-			case "period":{
-				 counter++;
-			} break;
-			case "item":{
-				 counter++;
-			} break;
-			case "label":{
-				if(budgets.get(i).getLabel() != null) counter++;
-			} break;
-			case "amount":{
-				counter++;
-			} break;
-			case "n_quarters":{
-				counter++;
-			} break;
-			default: break;
+
+		switch(property) {
+		case "lei_code":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getLei_code() != null) 
+					counter++;
 			}
-		}
+		} break;
+		case "nsa":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getNsa() != null) 
+					counter++;
+			}		
+		} break;
+		case "period":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getPeriod() != 0) {
+					counter++;
+				}
+			}
+		} break;
+		case "item":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getItem() != 0) {
+					counter++;
+				}			
+			}
+		} break;
+		case "label":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getLabel() != null) counter++;
+			}
+		} break;
+		case "amount":{
+			for(int i = 0; i < budgets.size(); i++) {
+				counter++;
+			}
+		} break;
+		case "n_quarters":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getN_quarters() != 0) {
+					counter++;
+				}
+			}
+		} break;
+		default: break;
+		
+	}
 		//gestire errore
 		return counter;
 	}
@@ -179,27 +229,40 @@ public class BudgetService implements IBudgetService {
 		int n = 0;
 		
 		
-		for(int i = 0; i < budgets.size(); i++) {
-			switch(property) {
-			case "period":{
+		switch(property) {
+		case "period":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getPeriod() != 0) {
 					sum += budgets.get(i).getPeriod();
 					n++;
-			} break;
-			case "item":{
-				sum += budgets.get(i).getItem();
-				n++;
-			} break;
-			case "amount":{
+				}
+			}
+		} break;
+		case "item":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getItem() != 0) {
+					sum += budgets.get(i).getItem();
+					n++;
+				}
+			}
+		} break;
+		case "amount":{
+			for(int i = 0; i < budgets.size(); i++) {
 				sum += budgets.get(i).getAmount();
 				n++;
-			} break;
-			case "n_quarters":{
-				sum += budgets.get(i).getN_quarters();
-				n++;
-			} break;
-			default: break;
 			}
-		}
+		} break;
+		case "n_quarters":{
+			for(int i = 0; i < budgets.size(); i++) {
+				if(budgets.get(i).getN_quarters() != 0) {
+					sum += budgets.get(i).getN_quarters();
+					n++;
+				}
+			}
+		} break;
+		default: break;
+	
+	}
 		//gestire errore
 		double avg = sum/n;
 		return avg;
@@ -208,38 +271,39 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public double minBudget(String property) {
 		double min = 0;
+		int n = 0;
 		
 		switch(property) {
 			case "period":{
 				min = budgets.get(0).getPeriod();
 				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
-					if(budgets.get(i).getPeriod() < min ) 
+					if(budgets.get(i).getPeriod() < min && budgets.get(i).getPeriod() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getPeriod());
+						n++;
 				}
 			} break;
 			case "item":{
 				min = budgets.get(0).getItem();
 				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
-					if(budgets.get(i).getItem() < min ) 
+					if(budgets.get(i).getItem() < min && budgets.get(i).getItem() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getItem());
+						n++;
 				}
 			} break;
 			case "amount":{
 				min = budgets.get(0).getAmount();
 				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
 					if(budgets.get(i).getAmount() < min ) 
 						min = budgets.get(i).getAmount();
+						n++;
 				}
 			} break;
 			case "n_quarters":{
 				min = budgets.get(0).getN_quarters();
 				for(int i = 1; i < budgets.size(); i++) {
-					// -1 vuol dire che il parametro non è presente e quindi non va considerato
-					if(budgets.get(i).getN_quarters() < min ) 
+					if(budgets.get(i).getN_quarters() < min && budgets.get(i).getN_quarters() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getN_quarters());
+						n++;
 				}
 			} break;
 			default: break;
@@ -295,14 +359,66 @@ public class BudgetService implements IBudgetService {
 		
 		return tmp;
 	}
-
-	//implementazione dei filtri
 	
 
 	@Override
 	public double devstdBudget(String property) {
-		// TODO Auto-generated method stub
-		return 0;
+		double count=0.0;
+
+		double avg = avgBudget(property);
+
+		double num= 0.0;
+		
+		switch (property) {
+		
+		case "period":{
+			for(Budget b : budgets){
+				if(b.getPeriod()== 0) {
+					continue;
+
+				}else {
+					num += Math.pow((b.getPeriod() - avg), 2);
+					count++;
+				}
+			}
+		}break;
+			
+		case "item":{
+			for(Budget b : budgets){
+				if(b.getItem()== 0) {
+					continue;
+
+				}else {
+					num += Math.pow((b.getItem() - avg), 2);
+					count++;
+				}
+			}
+		}break;
+			
+		case "amount":{
+			for(Budget b : budgets){
+					num += Math.pow((b.getAmount() - avg), 2);
+					count++;
+				}
+		}break;
+		
+		case "n_quarters":{
+			for(Budget b : budgets){
+				if(b.getN_quarters()== 0) {
+					continue;
+
+				}else {
+					num += Math.pow((b.getN_quarters() - avg), 2);
+					count++;
+				}
+			}
+		}break;
+
+
+		}
+
+		double devStdB = Math.sqrt( num / count);
+		return devStdB; 
 	}
 
 
