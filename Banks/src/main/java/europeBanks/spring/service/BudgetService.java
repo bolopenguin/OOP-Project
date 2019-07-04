@@ -81,95 +81,72 @@ public class BudgetService implements IBudgetService {
 	 */
 	public double sumBudget(String property) throws Exception {
 		double sum = 0;
-		int n = 0;
 		
 		switch(property) {
 			case "period":{
 				for(int i = 0; i < budgets.size(); i++) {
-					if(budgets.get(i).getPeriod() != 0) {
+					if(budgets.get(i).getPeriod() != 0) 
 						sum += budgets.get(i).getPeriod();
-						n++;
-					}
 				}
 			} break;
 			case "item":{
 				for(int i = 0; i < budgets.size(); i++) {
-					if(budgets.get(i).getItem() != 0) {
+					if(budgets.get(i).getItem() != 0) 
 						sum += budgets.get(i).getItem();
-						n++;
-					}
 				}
 			} break;
 			case "amount":{
 				for(int i = 0; i < budgets.size(); i++) {
 					sum += budgets.get(i).getAmount();
-					n++;
 				}
 			} break;
 			case "n_quarters":{
 				for(int i = 0; i < budgets.size(); i++) {
-					if(budgets.get(i).getN_quarters() != 0) {
+					if(budgets.get(i).getN_quarters() != 0) 
 						sum += budgets.get(i).getN_quarters();
-						n++;
-					}
 				}
 			} break;
-			default: break;
+			default: throw new Exception();
 		}
 		
-		//gestire errore
-		
-		if(n == 0) 
-			throw new Exception();
-		else
-			return sum;
+		return sum;
 	}
 
 	@Override
 	public double maxBudget(String property) throws Exception{
 		double max = 0;
-		int n = 0;
 
 		switch(property) {
 		case "period":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getPeriod() > max && budgets.get(i).getPeriod() != 0) 
 					max = Double.valueOf(budgets.get(i).getPeriod());
-					n++;
 			}
 		} break;
 		case "item":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getItem()> max && budgets.get(i).getItem() != 0) 
 					max = Double.valueOf(budgets.get(i).getItem());
-					n++;
 			}
 		} break;
 		case "amount":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getAmount()> max) 
 					max = Double.valueOf(budgets.get(i).getAmount());
-					n++;
 			}
 		} break;
 		case "n_quarters":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getN_quarters()> max && budgets.get(i).getN_quarters() != 0) 
 					max = Double.valueOf(budgets.get(i).getN_quarters());
-					n++;
 			}
 		} break;
 		
-		default: break;
+		default: throw new Exception();
 		
 		}
 		
-		//gestire errore
-		
-		if(n == 0) 
-			throw new Exception();
-		else
-			return max;
+		return max;
 	}
 	
 	/** @param variable, variabile su cui si effettua il conteggio di attivita'
@@ -180,21 +157,18 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public int countBudget(String property) throws Exception {
 		int counter = 0;
-		
 
 		switch(property) {
 		case "period":{
 			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getPeriod() != 0) {
+				if(budgets.get(i).getPeriod() != 0) 
 					counter++;
-				}
 			}
 		} break;
 		case "item":{
 			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getItem() != 0) {
+				if(budgets.get(i).getItem() != 0) 
 					counter++;
-				}			
 			}
 		} break;
 		case "amount":{
@@ -204,20 +178,15 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "n_quarters":{
 			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getN_quarters() != 0) {
+				if(budgets.get(i).getN_quarters() != 0) 
 					counter++;
-				}
 			}
 		} break;
-		default: break;
+		default: throw new Exception();
 		
-	}
-		//gestire errore
-		
-		if(counter == 0) 
-			throw new Exception();
-		else
-			return counter;
+	}	
+
+		return counter;
 	}
 
 	@Override
@@ -257,22 +226,17 @@ public class BudgetService implements IBudgetService {
 				}
 			}
 		} break;
-		default: break;
+		default: throw new Exception();
 	
 	}
 		double avg = sum/n;
-		//gestire errore
-		if(n == 0) 
-			throw new Exception();
-		else
-			return avg;
+		return avg;
 
 	}
 	
 	@Override
 	public double minBudget(String property) throws Exception{
 		double min = 0;
-		int n = 0;
 		
 		switch(property) {
 			case "period":{
@@ -280,7 +244,6 @@ public class BudgetService implements IBudgetService {
 				for(int i = 1; i < budgets.size(); i++) {
 					if(budgets.get(i).getPeriod() < min && budgets.get(i).getPeriod() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getPeriod());
-						n++;
 				}
 			} break;
 			case "item":{
@@ -288,7 +251,6 @@ public class BudgetService implements IBudgetService {
 				for(int i = 1; i < budgets.size(); i++) {
 					if(budgets.get(i).getItem() < min && budgets.get(i).getItem() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getItem());
-						n++;
 				}
 			} break;
 			case "amount":{
@@ -296,7 +258,6 @@ public class BudgetService implements IBudgetService {
 				for(int i = 1; i < budgets.size(); i++) {
 					if(budgets.get(i).getAmount() < min ) 
 						min = budgets.get(i).getAmount();
-						n++;
 				}
 			} break;
 			case "n_quarters":{
@@ -304,17 +265,12 @@ public class BudgetService implements IBudgetService {
 				for(int i = 1; i < budgets.size(); i++) {
 					if(budgets.get(i).getN_quarters() < min && budgets.get(i).getN_quarters() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getN_quarters());
-						n++;
 				}
 			} break;
-			default: break;
+			default:throw new Exception();
 		}
 
-		//gestire errore
-		if(n == 0) 
-			throw new Exception();
-		else
-			return min;
+		return min;
 	}
 
 	@Override
@@ -417,20 +373,16 @@ public class BudgetService implements IBudgetService {
 				}
 			}
 		}break;
-		default: break;
+		default: throw new Exception();
 
 		}
 
 		double devStdB = Math.sqrt( num / count);
-		//gestire errore
-		if(count == 0) 
-			throw new Exception();
-		else
-			return devStdB; 
+		return devStdB; 
 	}
 
 	@Override
-	public Map<String, Integer> getUniqueString(String property) {
+	public Map<String, Integer> getUniqueString(String property) throws Exception {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		int count = 0;
 
@@ -453,6 +405,7 @@ public class BudgetService implements IBudgetService {
 				}
 				
 			} break;
+			default: throw new Exception();
 		}
 		return map;
 	}

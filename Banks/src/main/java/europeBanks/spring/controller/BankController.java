@@ -102,7 +102,7 @@ public class BankController {
 			count = service.countBudget(property);
 			counter.put("count", count);
 		} catch (Exception e) {
-			counter.put("count", "Could not find the input Property or is empty");
+			counter.put("error", "Could not find the input Property");
 		}
 		
 		return counter.toString();
@@ -156,7 +156,12 @@ public class BankController {
 	@RequestMapping(value = "/budget/unique", method = RequestMethod.GET)
 	public Map<String, Integer> getUniqueString(@RequestParam("property") String property)
 	{
-		Map<String, Integer> map = service.getUniqueString(property);
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		try {
+			map = service.getUniqueString(property);
+		} catch (Exception e) {
+			map.put("error: Could not find the input Property", 0);	
+		}
 		
 		return map;
 	}

@@ -35,7 +35,7 @@ public interface IBudgetService {
 	int countBudget(String property) throws Exception;
 	
 	ArrayList <Budget> getBudgetByProperty(String property, String value);
-	Map<String, Integer> getUniqueString(String property);
+	Map<String, Integer> getUniqueString(String property) throws Exception;
 	
 	/**
 	 * filtri
