@@ -59,7 +59,7 @@ public class BankController {
 	{
 		JSONObject average = new JSONObject();
 		double avg = service.avgBudget(property);
-		average.put("Average", avg);
+		average.put("average", avg);
 		return average.toString();
 	}
 
@@ -84,7 +84,7 @@ public class BankController {
 	{
 		JSONObject counter = new JSONObject();
 		double count = service.countBudget(property);
-		counter.put("Count", count);
+		counter.put("count", count);
 		return counter.toString();
 	}
 	
@@ -93,7 +93,7 @@ public class BankController {
 	{
 		JSONObject max = new JSONObject();
 		double maximum = service.maxBudget(property);
-		max.put("Max", maximum);
+		max.put("max", maximum);
 		return max.toString();
 	}
 	
@@ -102,8 +102,17 @@ public class BankController {
 	{
 		JSONObject min = new JSONObject();
 		double minimum = service.minBudget(property);
-		min.put("Min", minimum);
+		min.put("min", minimum);
 		return min.toString();
+	}
+	
+	@RequestMapping(value = "/budget/devstd", method = RequestMethod.GET)
+	public String devstdBudget(@RequestParam("property") String property)
+	{
+		JSONObject devstd = new JSONObject();
+		double deviation = service.devstdBudget(property);
+		devstd.put("devstd", deviation);
+		return devstd.toString();
 	}
 
 	
