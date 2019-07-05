@@ -10,30 +10,17 @@ import org.springframework.web.server.ResponseStatusException;
  */
 
 public class Error {
-
-	private String messageError;
-	
 	/**
-	 * Costruttore
-	 * 
-	 * @param messageError e' il messaggio che rappresenta il tipo di errore incontrato
+	 * metodo che invia un errore in caso di bad Request
+	 * @param property
+	 * @throws Exception
 	 */
-
-	public Error(String messageError) {
-		super();
-		this.messageError = messageError;
+	public static void noPropertyMsg(String property) throws Exception {
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not find the input data: " + property);
 	}
 	
-	/**
-	 *  getter del messaggio di errore
-	 * @return
-	 */
-	public String getMessage() {
-		return messageError;
-	}
-	
-	public static void errorMsg(String property) throws Exception {
-		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not find the input property: " + property);
+	public static void noParamsMsg() throws Exception {
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Input parameters are wrong");
 	}
 
 

@@ -42,9 +42,9 @@ public class BudgetService implements IBudgetService {
 		String url_json = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=eu-wide-transparency-exercise-results-templates-2016";
 
 		parse.downloadJSON(url_json,parse.getNameJSON());
-		System.out.println("Download JSON compleato");
+		System.out.println("Download JSON completato");
 		parse.downloadCSV(parse.getURL(nameJSON), parse.getNameCSV());
-		System.out.println("Download CSV compleato");
+		System.out.println("Download CSV completato");
 		List<List<String>> records = ParserCSV.readFile(parse.getNameCSV());
 
 
@@ -376,88 +376,83 @@ public class BudgetService implements IBudgetService {
 	//implementazione dei filtri
 	
 	@Override
-	public ArrayList<Budget> amountFilter(String operator, String value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public ArrayList<Budget>cFilter(String mname, String operator,int...period)  {
-
-		ArrayList<Budget> budgets = new ArrayList<Budget>();
-		
-		Object obj;
-		//Method m = obj.getClass().getMethod("get"+mname.substring(0, 1).toUpperCase()+ mname.substring(1),null);
-
+	public ArrayList<Budget> conditionalFilter(String fieldName, String number, String operator) throws Exception {
+		ArrayList<Budget> budgetsFiltered = budgets;
 		switch(operator) {
+		case "<":{
+			for(Budget b : budgets) {
 
-		case ">": 
-			for (Budget b: budgets)
-			{
-
-			} break;
-
-		case ">=": 
-			for (Budget b: budgets)
-			{
-
-			} break;
-
-		case "<": 
-			for (Budget b: budgets)
-			{
-
-			} break;
-
-		case "<=": 
-			for (Budget b: budgets)
-			{
-
-			} break;
-
-		case "==": 
-			for (Budget b: budgets)
-			{
-
-			} break;
-
-		case "=><=":{
+			}
 			
-			} break;
+		} break;
+		case "<=":{
+			for(Budget b : budgets) {
+
+			}
 			
+		} break;
+		case "=":{
+			for(Budget b : budgets) {
+
+			}
+		} break;
+		case ">=":{
+			for(Budget b : budgets) {
+
+			}
+		} break;
+		case ">":{
+			for(Budget b : budgets) {
+
+			}
+		} break;
+		default: throw new Exception();
 		}
-
-		return budgets;
-
+		
+		return budgetsFiltered;
 	}
 
 	@Override
-	public ArrayList<Budget> propertyFilter(String property, String values) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public ArrayList<Budget> logicalFilter(String fieldName1, String value1, String operator, String fieldName2, String value2)throws Exception {
+		ArrayList<Budget> budgetsFiltered = budgets;
+		operator = operator.toLowerCase();
+		
+		switch(operator) {
+		case "and":{
+			if(fieldName2.isEmpty() || value2.isEmpty())
+				throw new Exception();
+			for(Budget b : budgets) {
 
-	@Override
-	public ArrayList<Budget> ninFilter(String operator, String property, String values) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			}
+			
+		} break;
+		case "or":{
+			if(fieldName2.isEmpty() || value2.isEmpty())
+				throw new Exception();
+			for(Budget b : budgets) {
 
-	@Override
-	public ArrayList<Budget> notFilter(String property, String values) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			}
+			
+		} break;
+		case "not":{
+			for(Budget b : budgets) {
 
-	@Override
-	public ArrayList<Budget> orFilter(String property, String values) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+			}
+		} break;
+		case "in":{
+			for(Budget b : budgets) {
 
-	@Override
-	public ArrayList<Budget> andFilter(String property, String values) {
-		// TODO Auto-generated method stub
-		return null;
+			}
+		} break;
+		case "nin":{
+			for(Budget b : budgets) {
+
+			}
+		} break;
+		default: throw new Exception();
+		}
+		
+		return budgetsFiltered;
 	}
 
 	

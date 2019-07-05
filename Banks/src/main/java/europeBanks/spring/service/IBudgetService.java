@@ -1,6 +1,7 @@
 package europeBanks.spring.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 import europeBanks.spring.model.*;
@@ -38,18 +39,11 @@ public interface IBudgetService {
 	
 	/**
 	 * filtri
+	 * @throws Exception 
 	 */
-	//filtro sulla proprieta' amount (es. prende i budget con amount >= 100)
-	ArrayList<Budget> amountFilter(String operator, String value);
-	//filtro su una proprieta' generica (es. prende i budget con nsa = IT)
-	ArrayList<Budget> propertyFilter(String property, String values);
-	//filtro in o nin (es. prende i budget con nsa = IT oppure non prende i budget con nsa = IT)
-	ArrayList<Budget> ninFilter(String operator, String property, String values);
-	//filtro not (es. non prende i budget con nsa = FR) 
-	ArrayList<Budget> notFilter(String property, String values);	
-	//filtro or (es. prende i budget con nsa = FR o nsa = IT)
-	ArrayList<Budget> orFilter(String property, String values);
-	//filtro and (es. prende i budget con nsa = FR e n_quarters = 4)
-	ArrayList<Budget> andFilter(String property, String values);
+
+	ArrayList<Budget> conditionalFilter(String fieldName, String number, String operator) throws Exception;
+	
+	ArrayList<Budget> logicalFilter(String fieldName1, String value1, String operator, String fieldName2, String value2) throws Exception;
 
 }

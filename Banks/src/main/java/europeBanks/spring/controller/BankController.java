@@ -1,5 +1,6 @@
 package europeBanks.spring.controller;
 
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.validator.constraints.ParameterScriptAssert;
+import org.jboss.logging.Param;
 import org.json.JSONObject;
 
 /**
@@ -35,7 +38,7 @@ public class BankController {
 	 */
 	
 	@RequestMapping(value = "/metadata", method = RequestMethod.GET)
-	public Object metadata()
+	public ArrayList<Metadata> metadata()
 	{
 		return service.getMetadata();
 	}
@@ -46,14 +49,41 @@ public class BankController {
 	 */
 	
 	@RequestMapping(value = "/data", method = RequestMethod.GET)
-	public Object data()
-	{
+	public ArrayList<Budget> data(
+			@RequestParam(name = "logicalOperator", defaultValue = "") String logicalOperator, 
+			@RequestParam(name = "conditionalOperator", defaultValue = "") String conditionalOperator, 
+			@RequestParam(name = "field", defaultValue = "") String field, 
+			@RequestParam(name = "value", defaultValue = "") String value, 
+			@RequestParam(name = "field1", defaultValue = "") String field1, 
+			@RequestParam(name = "value1", defaultValue = "") String value1
+			) throws Exception
+	{	
 		return service.getBudget();
 	}
 	
 	/**
 	 * Implementazione delle Funzioni Statistiche
 	 */
+	
+	@RequestMapping(value = "/budget/stats", method = RequestMethod.GET)
+	public String statsBudget(@RequestParam("property") String property) 
+			throws Exception
+	{
+		JSONObject stats = new JSONObject();
+		
+		try {
+			//mettere sta roba in una funzione
+			stats.put("average", service.avgBudget(property.toLowerCase()));
+			stats.put("sum", service.sumBudget(property.toLowerCase()));
+			stats.put("count", service.countBudget(property.toLowerCase()));
+			stats.put("max",service.maxBudget(property.toLowerCase()));
+			stats.put("min", service.minBudget(property.toLowerCase()));
+			stats.put("devstd", service.devstdBudget(property.toLowerCase()));			
+		} catch (Exception e) {
+			Error.noPropertyMsg(property);
+		}
+		return stats.toString();
+	}
 	
 	
 	/**
@@ -67,13 +97,11 @@ public class BankController {
 	public String avgBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject average = new JSONObject();
-		double avg;
 		try {
-			avg = service.avgBudget(property.toLowerCase());
-			average.put("average", avg);
+			average.put("average", service.avgBudget(property.toLowerCase()));
 		} catch (Exception e) {
 			
-			Error.errorMsg(property);
+			Error.noPropertyMsg(property);
 		}
 		
 		return average.toString();
@@ -90,12 +118,10 @@ public class BankController {
 	public String sumBudget(@RequestParam("property")String property) throws Exception 
 	{
 		JSONObject addiction = new JSONObject();
-		double sum;
 		try {
-			sum = service.sumBudget(property.toLowerCase());
-			addiction.put("sum", sum);
+			addiction.put("sum", service.sumBudget(property.toLowerCase()));
 		} catch (Exception e) {
-			Error.errorMsg(property);
+			Error.noPropertyMsg(property);
 		}
 		
 		return addiction.toString();
@@ -113,12 +139,10 @@ public class BankController {
 	public String countBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject counter = new JSONObject();
-		double count;
 		try {
-			count = service.countBudget(property.toLowerCase());
-			counter.put("count", count);
+			counter.put("count", service.countBudget(property.toLowerCase()));
 		} catch (Exception e) {
-			Error.errorMsg(property);
+			Error.noPropertyMsg(property);
 		}
 		
 		return counter.toString();
@@ -135,12 +159,10 @@ public class BankController {
 	public String maxBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject max = new JSONObject();
-		double maximum;
 		try {
-			maximum = service.maxBudget(property.toLowerCase());
-			max.put("max", maximum);
+			max.put("max",service.maxBudget(property.toLowerCase()));
 		} catch (Exception e) {
-			Error.errorMsg(property);
+			Error.noPropertyMsg(property);
 		}
 		
 		return max.toString();
@@ -157,12 +179,10 @@ public class BankController {
 	public String minBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject min = new JSONObject();
-		double minimum;
 		try {
-			minimum = service.minBudget(property.toLowerCase());
-			min.put("min", minimum);
+			min.put("min", service.minBudget(property.toLowerCase()));
 		} catch (Exception e) {
-			Error.errorMsg(property);
+			Error.noPropertyMsg(property);
 		}
 		
 		return min.toString();
@@ -180,12 +200,10 @@ public class BankController {
 	public String devstdBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject devstd = new JSONObject();
-		double deviation;
 		try {
-			deviation = service.devstdBudget(property.toLowerCase());
-			devstd.put("devstd", deviation);
+			devstd.put("devstd", service.devstdBudget(property.toLowerCase()));
 		} catch (Exception e) {
-			Error.errorMsg(property);
+			Error.noPropertyMsg(property);
 		}
 		
 		return devstd.toString();
@@ -205,11 +223,49 @@ public class BankController {
 		try {
 			map = service.getUniqueString(property.toLowerCase());
 		} catch (Exception e) {
-			Error.errorMsg(property);
+			Error.noPropertyMsg(property);
 		}
 		
 		return map;
 	}
 
+	/**
+	 * Implementazione dei Filtri
+	 */
 	
+	@RequestMapping(value = "/logicalFilter", method = RequestMethod.GET)
+	public ArrayList<Budget> logicalFilter(
+			@RequestParam("operator") String operator, 
+			@RequestParam("field1") String field1, 
+			@RequestParam("value1") String value1, 
+			@RequestParam(name = "field2", defaultValue = "") String field2, 
+			@RequestParam(name = "value2", defaultValue = "") String value2
+			) throws Exception
+	{
+		ArrayList<Budget> filteredBudgets = service.getBudget();
+		try {
+			filteredBudgets = service.logicalFilter(field1, value1, operator, field2, value2);
+		} catch (Exception e) {
+			Error.noParamsMsg();
+		}
+		
+		return filteredBudgets;
+	}
+	
+	@RequestMapping(value = "/logicalFilter", method = RequestMethod.GET)
+	public ArrayList<Budget> conditionalFilter(
+			@RequestParam("operator") String operator, 
+			@RequestParam("field") String field, 
+			@RequestParam("value") String value
+			) throws Exception
+	{
+		ArrayList<Budget> filteredBudgets = service.getBudget();
+		try {
+			return service.conditionalFilter(field,value, operator);
+		} catch (Exception e) {
+			Error.noParamsMsg();
+		}
+		
+		return filteredBudgets;
+	}
 }
