@@ -1,6 +1,7 @@
 package europeBanks.spring.service;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -418,6 +419,61 @@ public class BudgetService implements IBudgetService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/** ci permette di filtrare le attivita'  per superifici totali iin base all'operatore scelto (minore, maggiore..)
+	 * @param operator, operatore scelto dall'utente
+	 * @param totalArea valore scelto dall'utente con cui filtrare le attivita'
+	 **@return budgets, arraylist di tutte le attivitÃ  che soddisfano la richiesta
+	 */
+
+	public ArrayList<Budget>cFilter(String mname, String operator,int...period)  {
+
+		ArrayList<Budget> budgets = new ArrayList<Budget>();
+		
+		Object obj;
+		//Method m = obj.getClass().getMethod("get"+mname.substring(0, 1).toUpperCase()+ mname.substring(1),null);
+
+		switch(operator) {
+
+		case ">": 
+			for (Budget b: budgets)
+			{
+
+			} break;
+
+		case ">=": 
+			for (Budget b: budgets)
+			{
+
+			} break;
+
+		case "<": 
+			for (Budget b: budgets)
+			{
+
+			} break;
+
+		case "<=": 
+			for (Budget b: budgets)
+			{
+
+			} break;
+
+		case "==": 
+			for (Budget b: budgets)
+			{
+
+			} break;
+
+		case "=><=":{
+			
+			} break;
+			
+		}
+
+		return budgets;
+
+	}
 
 	@Override
 	public ArrayList<Budget> propertyFilter(String property, String values) {
@@ -448,7 +504,6 @@ public class BudgetService implements IBudgetService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	
 	

@@ -65,7 +65,7 @@ public class BankController {
 			avg = service.avgBudget(property.toLowerCase());
 			average.put("average", avg);
 		} catch (Exception e) {
-			average.put("error", "Could not find the input Property");
+			average.put("error", "Could not find the input property: " + property);
 		}
 		
 		return average.toString();
@@ -83,7 +83,7 @@ public class BankController {
 			sum = service.sumBudget(property.toLowerCase());
 			addiction.put("sum", sum);
 		} catch (Exception e) {
-			addiction.put("error", "Could not find the input Property");
+			addiction.put("error", "Could not find the input property: " + property);
 		}
 		
 		return addiction.toString();
@@ -102,7 +102,7 @@ public class BankController {
 			count = service.countBudget(property.toLowerCase());
 			counter.put("count", count);
 		} catch (Exception e) {
-			counter.put("error", "Could not find the input Property");
+			counter.put("error", "Could not find the input property: " + property);
 		}
 		
 		return counter.toString();
@@ -117,7 +117,7 @@ public class BankController {
 			maximum = service.maxBudget(property.toLowerCase());
 			max.put("max", maximum);
 		} catch (Exception e) {
-			max.put("error", "Could not find the input Property");
+			max.put("error", "Could not find the input property: " + property);
 		}
 		
 		return max.toString();
@@ -132,7 +132,7 @@ public class BankController {
 			minimum = service.minBudget(property.toLowerCase());
 			min.put("min", minimum);
 		} catch (Exception e) {
-			min.put("error", "Could not find the input Property");
+			min.put("error", "Could not find the input property: " + property);
 		}
 		
 		return min.toString();
@@ -147,7 +147,7 @@ public class BankController {
 			deviation = service.devstdBudget(property.toLowerCase());
 			devstd.put("devstd", deviation);
 		} catch (Exception e) {
-			devstd.put("error", "Could not find the input Property");
+			devstd.put("error", "Could not find the input property: " + property);
 		}
 		
 		return devstd.toString();
@@ -160,7 +160,7 @@ public class BankController {
 		try {
 			map = service.getUniqueString(property.toLowerCase());
 		} catch (Exception e) {
-			map.put("error: Could not find the input Property", 0);	
+			map.put("error: \"Could not find the input property: " + property, 0);	
 		}
 		
 		return map;
