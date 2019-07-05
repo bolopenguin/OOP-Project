@@ -22,15 +22,15 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * Questa classe contiene i metodi per fare il download del file voluto dal web e salvarlo sul computer
- * Inoltre sono presenti i metodi per effettuare il parsing del file scaricato per poter individuare il file csv
+ * La classe permette di fare il download del file voluto e salvarlo sul computer.
+ * Infine sono presenti i metodi per effettuare il parsing del file scaricato in modo da poter individuare il file csv.
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  */
 
 public class ParserJSON {
 	/**
-	 * variabili che indicano i nomi in cui andremo a salvare i file csv e json
+	 * variabili che indicano i nomi in cui verranno salavti i file csv e json
 	 */
 	private String nameCSV; 
 	private String nameJSON;
@@ -58,9 +58,9 @@ public class ParserJSON {
 	}
 	
 	/**
-	 * metodo che fa il download del json
-	 * @param urlStr è l'url di dove si trova il file json
-	 * @param file è il nome con cui dobbiamo salvare il file scaricato
+	 * metodo che effettua il download del file json.
+	 * @param urlStr, è l'url del file json.
+	 * @param fileName, è il nome con il quale verra' salvato il file scaricato.
 	 */
 	
 	public void downloadJSON(String urlStr, String fileName) {
@@ -106,10 +106,10 @@ public class ParserJSON {
 	}
 
 	/**
-	 * metodo che fa il parsing del Json andando a individuare il csv 
-	 * @param nomeJSON nome dove si trova il file json
-	 * @return urlAddress  url dove si trova il csv
-	 * @throws FileNotFoundException eccezione nel caso in cui non riesca a trovare il file json
+	 * metodo che effettua il parsing del Json andando a individuare il csv. 
+	 * @param nomeJSON, nome che identifica il file json.
+	 * @return urlAddress,  url che identifica dove si trova il csv.
+	 * @throws FileNotFoundException, eccezione nel caso in cui non riesca a trovare il file json.
 	 */
 
 	public String getURL (String nomeJSON)throws FileNotFoundException {
@@ -140,13 +140,14 @@ public class ParserJSON {
 				JSONObject o1 = (JSONObject)o; 
 				String format = (String)o1.get("format");
 				String urlD = (String)o1.get("url");
+				System.out.println(format + " | " + urlD);
 				if(format.equals("http://publications.europa.eu/resource/authority/file-type/CSV")) {
-					System.out.println("CSV trovato");
+					System.out.println("There is a CSV");
 					urlAddress = urlD; 
-					System.out.println("L'url del CSV: " + urlAddress);
 					return urlAddress;
 
 				}
+				System.out.println(urlD);
 			}
 
 		}return urlAddress;

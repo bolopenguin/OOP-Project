@@ -23,7 +23,7 @@ public class Application {
     		try {
     			BudgetService.setBudgets();
 				BudgetService.setMetadata(new ArrayList<Metadata>());
-				System.out.println("Applicazione avviata: in ascolto della porta 8080");
+				System.out.println("Caricamento completato: in ascolto della porta 8080");
     		} catch (IOException e) {
     			e.printStackTrace();
     		}

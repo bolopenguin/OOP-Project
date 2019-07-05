@@ -10,8 +10,8 @@ import europeBanks.spring.model.*;
 
 /**
  * Classe che contiene i metodi per effettuare il parsing del csv
- * @author Utente
- *
+ * @author Damiano Bolognini
+ * @author Francesco Tontarelli
  */
 
 public class ParserCSV {
@@ -27,10 +27,10 @@ public class ParserCSV {
 	}
 	
 	/**
-	 * prende in ingresso il file csv e salva riga per riga il contenuto in una array list di righe
-	 * @param file nome del file csv
-	 * @return records array list che contiene tutte le righe
-	 * @throws FileNotFoundException eccezione nel caso non esista il csv
+	 * dopo aver preso in ingresso il file csv, salva riga per riga il contenuto in una array list di righe
+	 * @param file, nome del file csv
+	 * @return records, array list contenente tutte le righe
+	 * @throws FileNotFoundException, eccezione nel caso di non esistenza del csv
 	 */
 
 	
@@ -43,11 +43,11 @@ public class ParserCSV {
 				i++;
 			}
 		}
-		System.out.println("Numero di righe estratte : "+i);
+		System.out.println("number of rows : "+i);
 		return records;
 	}
 	/**
-	 * metodo per scandire le righe e separare le diverse parti di ogni riga salvandole in un array list di stringhe
+	 * il metodo scandisce le righe e separa le diverse parti di ogni riga salvandole in un array list di stringhe
 	 * @param line, singola riga del file csv
 	 * @return values, valori  di tipo ArrayList che verranno poi aggiunti nel record @see readFile
 	 */
@@ -64,10 +64,10 @@ public class ParserCSV {
 		return values;
 	}
 	/**
-	 * metodo che prende in ingresso l'array list che contiene array i cui elementi sono stringhe che identificano
+	 * Il metodo prende in ingresso l'array list che contiene array i cui elementi sono stringhe che identificano
 	 * le diverse componenti della sigola riga.
-	 * il metodo restituisce un array list non piÃ¹ di array di stringhe ma un array list di oggetti Budget
-	 * inoltre qui vengono fatti i controlli per verificare che la riga sia consistente prima di salvarla come un oggetto Budget
+	 * Il metodo restituisce un array list non piu' di array di stringhe ma un array list di oggetti Budget.
+	 * Infine qui vengono fatti i controlli per verificare che la riga sia consistente prima di salvarla come un oggetto Budget
 	 * @param records
 	 */
 	public static void parserCSV( List<List<String>> records) {
@@ -88,7 +88,7 @@ public class ParserCSV {
 						line.get(2).isEmpty() ? 0 : Integer.parseInt(line.get(2)),
 						line.get(3).isEmpty() ? 0 : Integer.parseInt(line.get(3)),
 						line.get(4).isEmpty() ? null : tmp,
-						line.get(5).isEmpty() ? 0 : Double.parseDouble(line.get(line.size()-2)),
+						line.get(5).isEmpty() ? Double.NaN : Double.parseDouble(line.get(line.size()-2)),
 						line.get(6).isEmpty() ? 0 : Integer.parseInt(line.get(line.size()-1))
 						);
 				template.add(b);

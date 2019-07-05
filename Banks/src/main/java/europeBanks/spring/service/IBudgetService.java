@@ -6,7 +6,7 @@ import java.util.Map;
 import europeBanks.spring.model.*;
 
 /** 
- * Interfaccia contente metodi che verranno implementati in BudjetItemServiceImplements
+ * Interfaccia contenente i metodi che verranno implementati in BudjetService
  * 
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
@@ -34,7 +34,6 @@ public interface IBudgetService {
 	
 	int countBudget(String property) throws Exception;
 	
-	ArrayList <Budget> getBudgetByProperty(String property, String value);
 	Map<String, Integer> getUniqueString(String property) throws Exception;
 	
 	/**

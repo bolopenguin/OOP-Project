@@ -1,12 +1,15 @@
 package europeBanks.spring.controller;
 
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import europeBanks.spring.model.*;
+import europeBanks.spring.util.*;
+import europeBanks.spring.util.Error;
 import europeBanks.spring.service.BudgetService;
 
 import java.util.ArrayList;
@@ -15,14 +18,19 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-
+/**
+ * Classe per gestire le richieste fatte all'applicazione attraverso la porta 8080
+ * @author Damiano Bolognini
+ * @author Francesco Tontarelli
+ *
+ */
 @RestController
 public class BankController {
 
 	BudgetService service = new BudgetService();
 	
 	/**
-	 * Metodi che restituiscono i Data e i Metadata
+	 * Metodo che restituiscono i Metadata
 	 * @return
 	 */
 	
@@ -31,6 +39,11 @@ public class BankController {
 	{
 		return service.getMetadata();
 	}
+	
+	/**
+	 * Metodo che restituiscono i Data
+	 * @return
+	 */
 	
 	@RequestMapping(value = "/data", method = RequestMethod.GET)
 	public Object data()
@@ -42,22 +55,16 @@ public class BankController {
 	 * Implementazione delle Funzioni Statistiche
 	 */
 	
+	
 	/**
-	 * questa funzione restutisce tutti i budget in cui la proprietÃ  Ã¨ uguale al valore dato
-	 * @param property proprieta' su cui fare la ricerca
-	 * @param value valore che deve avere la proprieta'
-	 * @return array list dei budget trovati
+	 * Funzione che calcola la media dei valori della proprietà scelta
+	 * @param property proprietà su cui calcolare i valori
+	 * @return media 
+	 * @throws Exception 
 	 */
 	
-	@RequestMapping(value = "/budget", method = RequestMethod.GET)
-	public ArrayList<Budget> budgetByProperty(@RequestParam("property") String property, @RequestParam("value") String value )
-	{
-		ArrayList<Budget> budgetsByProperty = service.getBudgetByProperty(property.toLowerCase(), value);
-		return budgetsByProperty;
-	}
-	
 	@RequestMapping(value = "/budget/average", method = RequestMethod.GET)
-	public String avgBudget(@RequestParam("property") String property)
+	public String avgBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject average = new JSONObject();
 		double avg;
@@ -65,17 +72,22 @@ public class BankController {
 			avg = service.avgBudget(property.toLowerCase());
 			average.put("average", avg);
 		} catch (Exception e) {
-			average.put("error", "Could not find the input property: " + property);
+			
+			Error.errorMsg(property);
 		}
 		
 		return average.toString();
 	}
 
 	/**
-	 * Restituisce la somma dei budgets delle attivita' con variabile lei_code e  valore di lei_code scelto dall'utente
+	 * Funzione che calcola la somma dei valori della proprieta' scelta
+	 * @param property proprietà su cui calcolare i valori
+	 * @return somma
+	 * @throws Exception 
 	 */
+	
 	@RequestMapping(value = "/budget/sum", method = RequestMethod.GET)
-	public String sumBudget(@RequestParam("property")String property) 
+	public String sumBudget(@RequestParam("property")String property) throws Exception 
 	{
 		JSONObject addiction = new JSONObject();
 		double sum;
@@ -83,7 +95,7 @@ public class BankController {
 			sum = service.sumBudget(property.toLowerCase());
 			addiction.put("sum", sum);
 		} catch (Exception e) {
-			addiction.put("error", "Could not find the input property: " + property);
+			Error.errorMsg(property);
 		}
 		
 		return addiction.toString();
@@ -91,10 +103,14 @@ public class BankController {
 	}
 	
 	/**
-	 * Restituisce il
+	 * Funzione che calcola il numero di occorrenze della proprieta' scelta
+	 * @param property proprietà di cui calcolare le occorrenze
+	 * @return conteggio
+	 * @throws Exception 
 	 */
+	
 	@RequestMapping(value = "/budget/count", method = RequestMethod.GET)
-	public String countBudget(@RequestParam("property") String property)
+	public String countBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject counter = new JSONObject();
 		double count;
@@ -102,14 +118,21 @@ public class BankController {
 			count = service.countBudget(property.toLowerCase());
 			counter.put("count", count);
 		} catch (Exception e) {
-			counter.put("error", "Could not find the input property: " + property);
+			Error.errorMsg(property);
 		}
 		
 		return counter.toString();
 	}
 	
+	/**
+	 * Funzione che calcola il massimo dei valori della proprieta' scelta
+	 * @param property proprietà in cui cercare il massimo
+	 * @return massimo
+	 * @throws Exception 
+	 */
+	
 	@RequestMapping(value = "/budget/max", method = RequestMethod.GET)
-	public String maxBudget(@RequestParam("property") String property)
+	public String maxBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject max = new JSONObject();
 		double maximum;
@@ -117,14 +140,21 @@ public class BankController {
 			maximum = service.maxBudget(property.toLowerCase());
 			max.put("max", maximum);
 		} catch (Exception e) {
-			max.put("error", "Could not find the input property: " + property);
+			Error.errorMsg(property);
 		}
 		
 		return max.toString();
 	}
 	
+	/**
+	 * Funzione che calcola il minimo dei valori della proprieta' scelta
+	 * @param property proprietà in cui cercare il minimo
+	 * @return minimo
+	 * @throws Exception 
+	 */
+	
 	@RequestMapping(value = "/budget/min", method = RequestMethod.GET)
-	public String minBudget(@RequestParam("property") String property)
+	public String minBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject min = new JSONObject();
 		double minimum;
@@ -132,14 +162,22 @@ public class BankController {
 			minimum = service.minBudget(property.toLowerCase());
 			min.put("min", minimum);
 		} catch (Exception e) {
-			min.put("error", "Could not find the input property: " + property);
+			Error.errorMsg(property);
 		}
 		
 		return min.toString();
 	}
 	
+	
+	/**
+	 * Funzione che calcola la deviazione standard dei valori della proprieta' scelta
+	 * @param property proprietà su cui calcolare la deviazione standard
+	 * @return deviazione standard
+	 * @throws Exception 
+	 */
+	
 	@RequestMapping(value = "/budget/devstd", method = RequestMethod.GET)
-	public String devstdBudget(@RequestParam("property") String property)
+	public String devstdBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject devstd = new JSONObject();
 		double deviation;
@@ -147,20 +185,27 @@ public class BankController {
 			deviation = service.devstdBudget(property.toLowerCase());
 			devstd.put("devstd", deviation);
 		} catch (Exception e) {
-			devstd.put("error", "Could not find the input property: " + property);
+			Error.errorMsg(property);
 		}
 		
 		return devstd.toString();
 	}
 	
+	/**
+	 * Funzione che calcola il numero di occorrenze degli elementi unici su una proprieta'
+	 * @param property proprietà su individuare gli elementi unici
+	 * @return mappa che contiene elementi del tipo <valore , numero di occorrenze>
+	 * @throws Exception 
+	 */
+	
 	@RequestMapping(value = "/budget/unique", method = RequestMethod.GET)
-	public Map<String, Integer> getUniqueString(@RequestParam("property") String property)
+	public Map<String, Integer> getUniqueString(@RequestParam("property") String property) throws Exception
 	{
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		try {
 			map = service.getUniqueString(property.toLowerCase());
 		} catch (Exception e) {
-			map.put("error: \"Could not find the input property: " + property, 0);	
+			Error.errorMsg(property);
 		}
 		
 		return map;

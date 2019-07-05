@@ -18,7 +18,7 @@ public class Budget {
 	private int n_quarters;
 	
 	/**
-	 * Primo Costruttore
+	 * Costruttore
 	 * 
 	 * @param lei_code codice univoco per indentificare l'attivita' finanziaria (la banca)
 	 * @param nsa codice che indica la nazione in cui ha sede la banca
@@ -38,25 +38,6 @@ public class Budget {
 		this.label = label;
 		this.amount = amount;
 		this.n_quarters = n_quarters;
-	}
-	
-	/**	 
-	 * Secondo Costruttore 
-	 * crea un oggetto copia di quello che gli viene passato come argomento
-	 * 
-	 * @param i
-	 */
-
-	
-	public Budget(Budget i) {
-		super();
-		this.lei_code = i.lei_code;
-		this.nsa = i.nsa;
-		this.period = i.period;
-		this.item = i.item;
-		this.label = i.label;
-		this.amount = i.amount;
-		this.n_quarters = i.n_quarters;
 	}
 
 	/**
@@ -172,7 +153,7 @@ public class Budget {
 	}
 
 	/**
-	 * metodo che rappresenta sotto forma di stringa l'oggetto con tutti i suoi attributi
+	 * toString della classe
 	 */
 	@Override
 	public String toString() {

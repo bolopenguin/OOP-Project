@@ -16,7 +16,7 @@ import europeBanks.spring.parser.*;
 
 /**
  * classe in cui vengono implementate le diverse operazioni da compiere sul dataset
- * inoltre viene fatto partire il download del file ed effettuato il parsing all'avvio dell'applicazione
+ * inoltre contiene i metodi un metodo per effettuare il download dei file ed effettuare il parsing
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  */
@@ -30,7 +30,10 @@ public class BudgetService implements IBudgetService {
 	private static ArrayList<Budget> budgets;
 	private static ArrayList<Metadata> metadata;
 
-	
+	/**
+	 * Metodo per andare a scaricare e parsare i file, cioè per settare l'array list che contiene tutti i budget
+	 * @throws IOException
+	 */
 	public static void setBudgets() throws IOException {
 		String nameCSV = "Budget.csv";
 		String nameJSON = "JsonFile.json";
@@ -49,6 +52,11 @@ public class BudgetService implements IBudgetService {
 		budgets = ParserCSV.getBudgets();
 	}
 	
+	/**
+	 * Metodo per settare i metadata dell'applicazione
+	 * @param metadata
+	 */
+	
 	public static void setMetadata(ArrayList<Metadata> metadata) {
 		metadata.add(new Metadata("lei_code","Legal Entity Identifier Code","String"));
 		metadata.add(new Metadata("nsa","Country","String"));
@@ -60,13 +68,16 @@ public class BudgetService implements IBudgetService {
 		BudgetService.metadata = metadata;
 		}
 
-	
-	
+	/**
+	 * getter dei budget
+	 */
 	@Override
 	public ArrayList<Budget> getBudget() {
 		return budgets;
 	}
-	
+	/**
+	 * getter dei metadata
+	 */
 	@Override
 	public ArrayList<Metadata> getMetadata() {
 		return metadata;
@@ -76,11 +87,6 @@ public class BudgetService implements IBudgetService {
 	//implementazione delle operazioni
 	
 	@Override
-	/**
-	 * restituisce la somma dei budgets con variabile uguale a lei_code e valore scelto dall'utente
-	 * @param n, totale degli amount
-	 * 
-	 */
 	public double sumBudget(String property) throws Exception {
 		double sum = 0;
 		
@@ -99,7 +105,9 @@ public class BudgetService implements IBudgetService {
 			} break;
 			case "amount":{
 				for(int i = 0; i < budgets.size(); i++) {
-					sum += budgets.get(i).getAmount();
+					if(!Double.isNaN(budgets.get(i).getAmount())) {
+						sum += budgets.get(i).getAmount();
+					}
 				}
 			} break;
 			case "n_quarters":{
@@ -133,8 +141,8 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "amount":{
 			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getAmount()> max) 
-					max = Double.valueOf(budgets.get(i).getAmount());
+				if(budgets.get(i).getAmount()> max && !Double.isNaN(budgets.get(i).getAmount())) 
+					max = budgets.get(i).getAmount();
 			}
 		} break;
 		case "n_quarters":{
@@ -150,11 +158,6 @@ public class BudgetService implements IBudgetService {
 		
 		return max;
 	}
-	
-	/** @param variable, variabile su cui si effettua il conteggio di attivita'
-	 * @value value, valore della variabile che l'utente sceglie per eseguire il conteggio
-	 * @return n, conteggio finale
-	 */
 
 	@Override
 	public int countBudget(String property) throws Exception {
@@ -175,7 +178,9 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "amount":{
 			for(int i = 0; i < budgets.size(); i++) {
-				counter++;
+				if(!Double.isNaN(budgets.get(i).getAmount())) {
+					counter++;
+				}
 			}
 		} break;
 		case "n_quarters":{
@@ -216,8 +221,10 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "amount":{
 			for(int i = 0; i < budgets.size(); i++) {
-				sum += budgets.get(i).getAmount();
-				n++;
+				if(!Double.isNaN(budgets.get(i).getAmount())) {
+					sum += budgets.get(i).getAmount();
+					n++;
+				}
 			}
 		} break;
 		case "n_quarters":{
@@ -258,7 +265,7 @@ public class BudgetService implements IBudgetService {
 			case "amount":{
 				min = budgets.get(0).getAmount();
 				for(int i = 1; i < budgets.size(); i++) {
-					if(budgets.get(i).getAmount() < min ) 
+					if(budgets.get(i).getAmount() < min && !Double.isNaN(budgets.get(i).getAmount())) 
 						min = budgets.get(i).getAmount();
 				}
 			} break;
@@ -274,54 +281,6 @@ public class BudgetService implements IBudgetService {
 
 		return min;
 	}
-
-	@Override
-	public ArrayList<Budget> getBudgetByProperty(String property, String value) {
-		ArrayList<Budget> tmp = new ArrayList<Budget>();
-		int tmpInt;
-		double tmpDbl;
-		
-		for(int i = 0; i < budgets.size(); i++) {
-			switch(property) {
-			case "lei_code":{
-				if(budgets.get(i).getLei_code().equals(value))
-					tmp.add(budgets.get(i));
-			} break;
-			case "nsa":{
-				if(budgets.get(i).getNsa().equals(value))
-					tmp.add(budgets.get(i));
-			}break;
-			case "period":{
-				tmpInt = Integer.parseInt(value);
-				if(budgets.get(i).getPeriod() == tmpInt)
-					tmp.add(budgets.get(i));
-			} break;
-			case "item":{
-				tmpInt = Integer.parseInt(value);
-				if(budgets.get(i).getItem() == tmpInt)
-					tmp.add(budgets.get(i));
-			} break;
-			case "label":{
-				if(budgets.get(i).getLabel().equals(value))
-					tmp.add(budgets.get(i));
-			}break;
-			case "amount":{
-				tmpDbl = Double.parseDouble(value);
-				if(budgets.get(i).getAmount() == tmpDbl)
-					tmp.add(budgets.get(i));
-			} break;
-			case "n_quarters":{
-				tmpInt = Integer.parseInt(value);
-				if(budgets.get(i).getN_quarters() == tmpInt)
-					tmp.add(budgets.get(i));
-			} break;
-			default: break;
-			}
-		}
-		
-		return tmp;
-	}
-	
 
 	@Override
 	public double devstdBudget(String property) throws Exception{
@@ -359,8 +318,10 @@ public class BudgetService implements IBudgetService {
 			
 		case "amount":{
 			for(Budget b : budgets){
+				if(!Double.isNaN(b.getAmount())) {
 					num += Math.pow((b.getAmount() - avg), 2);
-					count++;
+					count++;	
+				}
 				}
 		}break;
 		
@@ -419,12 +380,6 @@ public class BudgetService implements IBudgetService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	/** ci permette di filtrare le attivita'  per superifici totali iin base all'operatore scelto (minore, maggiore..)
-	 * @param operator, operatore scelto dall'utente
-	 * @param totalArea valore scelto dall'utente con cui filtrare le attivita'
-	 **@return budgets, arraylist di tutte le attivitÃ  che soddisfano la richiesta
-	 */
 
 	public ArrayList<Budget>cFilter(String mname, String operator,int...period)  {
 

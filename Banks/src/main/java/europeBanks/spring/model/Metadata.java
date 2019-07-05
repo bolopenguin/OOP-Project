@@ -1,7 +1,7 @@
 package europeBanks.spring.model;
 
 /**
- * classe per descrivere l'insieme dei dati
+ * Classe per descrivere l'insieme dei dati
  * 
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
