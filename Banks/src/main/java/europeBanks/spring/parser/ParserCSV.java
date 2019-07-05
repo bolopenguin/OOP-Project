@@ -43,7 +43,7 @@ public class ParserCSV {
 				i++;
 			}
 		}
-		System.out.println("number of rows : "+i);
+		System.out.println("Numero di righe estratte : "+i);
 		return records;
 	}
 	/**

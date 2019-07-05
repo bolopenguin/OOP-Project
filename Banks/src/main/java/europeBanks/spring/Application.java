@@ -22,8 +22,8 @@ public class Application {
         SpringApplication.run(Application.class, args);
     		try {
     			BudgetService.setBudgets();
-				System.out.println("Droga");
 				BudgetService.setMetadata(new ArrayList<Metadata>());
+				System.out.println("Applicazione avviata: in ascolto della porta 8080");
     		} catch (IOException e) {
     			e.printStackTrace();
     		}

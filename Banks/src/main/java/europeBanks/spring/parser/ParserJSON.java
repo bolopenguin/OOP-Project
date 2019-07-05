@@ -140,14 +140,13 @@ public class ParserJSON {
 				JSONObject o1 = (JSONObject)o; 
 				String format = (String)o1.get("format");
 				String urlD = (String)o1.get("url");
-				System.out.println(format + " | " + urlD);
 				if(format.equals("http://publications.europa.eu/resource/authority/file-type/CSV")) {
-					System.out.println("There is a CSV");
+					System.out.println("CSV trovato");
 					urlAddress = urlD; 
+					System.out.println("L'url del CSV: " + urlAddress);
 					return urlAddress;
 
 				}
-				System.out.println(urlD);
 			}
 
 		}return urlAddress;

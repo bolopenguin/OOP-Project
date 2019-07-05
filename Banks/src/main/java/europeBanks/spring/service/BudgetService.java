@@ -38,8 +38,9 @@ public class BudgetService implements IBudgetService {
 		String url_json = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=eu-wide-transparency-exercise-results-templates-2016";
 
 		parse.downloadJSON(url_json,parse.getNameJSON());
-		System.out.println("DONE");
+		System.out.println("Download JSON compleato");
 		parse.downloadCSV(parse.getURL(nameJSON), parse.getNameCSV());
+		System.out.println("Download CSV compleato");
 		List<List<String>> records = ParserCSV.readFile(parse.getNameCSV());
 
 
