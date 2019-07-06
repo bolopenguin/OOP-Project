@@ -374,70 +374,1288 @@ public class BudgetService implements IBudgetService {
 	}
 
 	//implementazione dei filtri
+	/** ci permette di filtrare le attività in base all'attributo e all'operatore scelto (minore, maggiore..)
+	 * @param property, attributo scelto dall'utente.
+	 * @param number, valore/i scelto/i dall'utente attraverso i quali filtrare le attivita'.
+	 * @param operator, operatore scelto dall'utente.
+	 **@return budgetsFiltered, arraylist di tutte le attività che soddisfano la richiesta.
+	 */
 	
 	@Override
-	public ArrayList<Budget> conditionalFilter(String fieldName, String number, String operator) throws Exception {
-		ArrayList<Budget> budgetsFiltered = budgets;
+	public ArrayList<Budget> conditionalFilter(String property, String[] number, String operator) throws Exception {
+		ArrayList<Budget> budgetsFiltered = new ArrayList<Budget>();
+		switch(property) {
+		case "period":{
+			switch(operator) {
+			case "<":{
+				for(Budget b : budgets) {
+					if(b.getPeriod()<Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case "<=":{
+				for(Budget b : budgets) {
+					if(b.getPeriod()>=Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case "=":{
+				for(Budget b : budgets) {
+					if(b.getPeriod()==Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case ">=":{
+				for(Budget b : budgets) {
+					if(b.getPeriod()>=Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case ">":{
+				for(Budget b : budgets) {
+					if(b.getPeriod()>Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			
+			default: throw new Exception();
+			}
+		} break;
+		case "item":{
+			switch(operator) {
+			case "<":{
+				for(Budget b : budgets) {
+					if(b.getItem()<Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case "<=":{
+				for(Budget b : budgets) {
+					if(b.getItem()>=Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case "=":{
+				for(Budget b : budgets) {
+					if(b.getItem()==Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case ">=":{
+				for(Budget b : budgets) {
+					if(b.getItem()>=Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case ">":{
+				for(Budget b : budgets) {
+					if(b.getItem()>Integer.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			
+			default: throw new Exception();
+			}
+		} break;
+		case "amount":{
+			switch(operator) {
+			case "<":{
+				for(Budget b : budgets) {
+					if(b.getAmount()<Double.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case "<=":{
+				for(Budget b : budgets) {
+					if(b.getAmount()>=Double.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case "=":{
+				for(Budget b : budgets) {
+					if(b.getAmount()==Double.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case ">=":{
+				for(Budget b : budgets) {
+					if(b.getAmount()>=Double.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			case ">":{
+				for(Budget b : budgets) {
+					if(b.getAmount()>Double.valueOf(number[0]))
+					{
+						budgetsFiltered.add(b);
+					}
+				}
+			}break;
+			
+			default: throw new Exception();
+			}
+		} break;
+		
+		
+	case "n_quarters":{
 		switch(operator) {
 		case "<":{
 			for(Budget b : budgets) {
-
+				if(b.getN_quarters()<Integer.valueOf(number[0]))
+				{
+					budgetsFiltered.add(b);
+				}
 			}
-			
-		} break;
+		}break;
 		case "<=":{
 			for(Budget b : budgets) {
-
+				if(b.getN_quarters()>=Integer.valueOf(number[0]))
+				{
+					budgetsFiltered.add(b);
+				}
 			}
-			
-		} break;
+		}break;
 		case "=":{
 			for(Budget b : budgets) {
-
+				if(b.getN_quarters()==Integer.valueOf(number[0]))
+				{
+					budgetsFiltered.add(b);
+				}
 			}
-		} break;
+		}break;
 		case ">=":{
 			for(Budget b : budgets) {
-
+				if(b.getN_quarters()>=Integer.valueOf(number[0]))
+				{
+					budgetsFiltered.add(b);
+				}
 			}
-		} break;
+		}break;
 		case ">":{
 			for(Budget b : budgets) {
-
+				if(b.getN_quarters()>Integer.valueOf(number[0]))
+				{
+					budgetsFiltered.add(b);
+				}
 			}
-		} break;
-		default: throw new Exception();
-		}
+		}break;
 		
+		}
+	} break;
+	
+	default: throw new Exception();
+	}
 		return budgetsFiltered;
 	}
 
+	
 	@Override
-	public ArrayList<Budget> logicalFilter(String fieldName1, String value1, String operator, String fieldName2, String value2)throws Exception {
+	public ArrayList<Budget> logicalFilter(String property1, String value1, String operator, String property2, String value2)throws Exception {
 		ArrayList<Budget> budgetsFiltered = budgets;
 		operator = operator.toLowerCase();
 		
 		switch(operator) {
 		case "and":{
-			if(fieldName2.isEmpty() || value2.isEmpty())
+			if(property2.isEmpty() || value2.isEmpty() || property1.isEmpty() || value1.isEmpty())
 				throw new Exception();
-			for(Budget b : budgets) {
-
-			}
-			
+			else {
+				switch (property1) {
+				case "lei_code":{
+					switch (property2) {
+					case "lei_code":{
+						if(value1==value2) {
+							for(Budget b : budgets) {
+								if (b.getLei_code().equalsIgnoreCase(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have two different lei_code");
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "nsa":{
+					switch (property2) {
+					case "nsa":{
+						if(value1==value2) {
+							for(Budget b : budgets) {
+								if (b.getNsa().equalsIgnoreCase(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have two different nsa");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "period":{
+					switch (property2) {
+					case "period":{
+						if(value1==value2) {
+							for(Budget b : budgets) {
+								if (b.getPeriod()==Integer.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have two different period");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "item":{
+					switch (property2) {
+					case "item":{
+						if(value1==value2) {
+							for(Budget b : budgets) {
+								if (b.getItem()==Integer.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have two different item");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "label":{
+					switch (property2) {
+					case "label":{
+						if(value1==value2) {
+							for(Budget b : budgets) {
+								if (b.getLabel().equalsIgnoreCase(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have two different label");
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "amount":{
+					switch (property2) {
+					case "amount":{
+						if(value1==value2) {
+							for(Budget b : budgets) {
+								if (b.getAmount()==Double.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have two different amount");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "n_quarters":{
+					switch (property2) {
+					case "n_quarters":{
+						if(value1==value2) {
+							for(Budget b : budgets) {
+								if (b.getN_quarters()==Integer.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have two different n_quarters");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}			
+				}
+				}
 		} break;
 		case "or":{
-			if(fieldName2.isEmpty() || value2.isEmpty())
+			if(property2.isEmpty() || value2.isEmpty() || property1.isEmpty() || value1.isEmpty())
 				throw new Exception();
-			for(Budget b : budgets) {
-
-			}
-			
+			else {
+				switch (property1) {
+				case "lei_code":{
+					switch (property2) {
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) || b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) || b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) || b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) || b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) || b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) || b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) || b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "nsa":{
+					switch (property2) {
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) || b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) || b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) || b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) || b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) || b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) || b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) || b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "period":{
+					switch (property2) {
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) || b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) || b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) || b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) || b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) || b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) || b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) || b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "item":{
+					switch (property2) {
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) || b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) || b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) || b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) || b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) || b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) || b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) || b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "label":{
+					switch (property2) {
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) || b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) || b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) || b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) || b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) || b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) || b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) || b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "amount":{
+					switch (property2) {
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) || b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) || b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) || b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) || b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) || b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) || b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) || b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "n_quarters":{
+					switch (property2) {
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) || b.getN_quarters()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) || b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) || b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) || b.getPeriod()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) || b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) || b.getAmount()==Double.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) || b.getItem()==Integer.valueOf(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}			
+				}
+				}
 		} break;
 		case "not":{
-			for(Budget b : budgets) {
-
-			}
+			if(property2.isEmpty() || value2.isEmpty() || property1.isEmpty() || value1.isEmpty())
+				throw new Exception();
+			else {
+				switch (property1) {
+				case "lei_code":{
+					switch (property2) {
+					case "lei_code":{
+						if(value1!=value2) {
+							for(Budget b : budgets) {
+								if (b.getLei_code().equalsIgnoreCase(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have and not have a lei_code");
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && !b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && !(b.getPeriod()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) &&!( b.getItem()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && !b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && !(b.getAmount()==Double.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getLei_code().equalsIgnoreCase(value1) && !(b.getN_quarters()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "nsa":{
+					switch (property2) {
+					case "nsa":{
+						if(value1!=value2) {
+							for(Budget b : budgets) {
+								if (b.getNsa().equalsIgnoreCase(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have and not have a nsa");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && !b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && !(b.getPeriod()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && !(b.getItem()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && !b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && !(b.getAmount()==Double.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getNsa().equalsIgnoreCase(value1) && !(b.getN_quarters()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "period":{
+					switch (property2) {
+					case "period":{
+						if(value1!=value2) {
+							for(Budget b : budgets) {
+								if (b.getPeriod()==Integer.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have and not have a period");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && !b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && !b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && !(b.getItem()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && !b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && !(b.getAmount()==Double.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getPeriod()==Integer.valueOf(value1) && !(b.getN_quarters()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "item":{
+					switch (property2) {
+					case "item":{
+						if(value1!=value2) {
+							for(Budget b : budgets) {
+								if (b.getItem()==Integer.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have and not have a item");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && !b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && !b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && !(b.getPeriod()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && !b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && !(b.getAmount()==Double.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getItem()==Integer.valueOf(value1) && !(b.getN_quarters()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "label":{
+					switch (property2) {
+					case "label":{
+						if(value1!=value2) {
+							for(Budget b : budgets) {
+								if (b.getLabel().equalsIgnoreCase(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have and not have a label");
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && !b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && !(b.getPeriod()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && !(b.getItem()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && !b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && !(b.getAmount()==Double.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getLabel().equalsIgnoreCase(value1) && !(b.getN_quarters()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "amount":{
+					switch (property2) {
+					case "amount":{
+						if(value1!=value2) {
+							for(Budget b : budgets) {
+								if (b.getAmount()==Double.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have and not have a amount");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && !b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && !b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && !(b.getPeriod()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && !b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && !(b.getItem()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "n_quarters":{
+						for(Budget b : budgets) {
+							if (b.getAmount()==Double.valueOf(value1) && !(b.getN_quarters()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}
+				case "n_quarters":{
+					switch (property2) {
+					case "n_quarters":{
+						if(value1!=value2) {
+							for(Budget b : budgets) {
+								if (b.getN_quarters()==Integer.valueOf(value1))
+									budgetsFiltered.add(b);
+							}
+						}else
+						System.out.println("it is impossible to have and not have a n_quarters");
+					}break;
+					case "lei_code":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && !b.getLei_code().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "nsa":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && !b.getNsa().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "period":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && !(b.getPeriod()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "label":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && !b.getLabel().equalsIgnoreCase(value2))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "amount":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && !(b.getAmount()==Double.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					case "item":{
+						for(Budget b : budgets) {
+							if (b.getN_quarters()==Integer.valueOf(value1) && !(b.getItem()==Integer.valueOf(value2)))
+								budgetsFiltered.add(b);
+						}
+					}break;
+					default: throw new Exception();
+				}
+					return budgetsFiltered;
+				}			
+				}
+				}
 		} break;
 		case "in":{
 			for(Budget b : budgets) {

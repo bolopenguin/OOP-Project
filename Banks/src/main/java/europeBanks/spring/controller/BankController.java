@@ -252,16 +252,16 @@ public class BankController {
 		return filteredBudgets;
 	}
 	
-	@RequestMapping(value = "/logicalFilter", method = RequestMethod.GET)
+	@RequestMapping(value = "/conditionalFilter", method = RequestMethod.GET)
 	public ArrayList<Budget> conditionalFilter(
-			@RequestParam("operator") String operator, 
-			@RequestParam("field") String field, 
-			@RequestParam("value") String value
+			@RequestParam("property") String property, 
+			@RequestParam("number") String[] number, 
+			@RequestParam("operator") String operator
 			) throws Exception
 	{
-		ArrayList<Budget> filteredBudgets = service.getBudget();
+		ArrayList<Budget> filteredBudgets = new ArrayList<>();
 		try {
-			return service.conditionalFilter(field,value, operator);
+			filteredBudgets = service.conditionalFilter(property.toLowerCase(),number, operator);
 		} catch (Exception e) {
 			Error.noParamsMsg();
 		}
