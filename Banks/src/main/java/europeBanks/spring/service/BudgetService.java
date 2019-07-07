@@ -17,8 +17,9 @@ import europeBanks.spring.util.FilterTools;
 
 
 /**
- * classe in cui vengono implementate le diverse operazioni da compiere sul dataset
- * inoltre contiene i metodi un metodo per effettuare il download dei file ed effettuare il parsing
+ * Classe in cui vengono implementate le diverse operazioni da compiere sul dataset
+ * Inoltre sono contenuti i metodo per andare a settare i data e i metadata
+ * cioe' i filtri e le operazioni statistiche
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  */
@@ -26,31 +27,36 @@ import europeBanks.spring.util.FilterTools;
 @Service("BudgetService")
 public class BudgetService implements IBudgetService {
 
-	/**
-	 * liste di array in cui andremo a inserire rispettivamente i budgets del dataset e i metadata
-	 */
+	//Array list in cui sono contenuti i budgets e i metadata
 	private static ArrayList<Budget> budgets;
 	private static ArrayList<Metadata> metadata;
 
 	/**
-	 * Metodo per andare a scaricare e parsare i file, cioè per settare l'array list che contiene tutti i budget
+	 * Metodo per andare a scaricare e parsare i file JSON e CSV
+	 * alla fine si setta la variabilie budgets che conterra' gli oggetti ricavati dal csv
 	 * @throws IOException
 	 */
 	public static void setBudgets() throws IOException {
+		// Nomi dei file Csv e Json
 		String nameCSV = "Budget.csv";
 		String nameJSON = "JsonFile.json";
 
+		// si crea l'oggetto ParserJson
 		ParserJSON parse = new ParserJSON (nameJSON, nameCSV);
+		// url in cui si trova il file Json da scaricare
 		String url_json = "http://data.europa.eu/euodp/data/api/3/action/package_show?id=eu-wide-transparency-exercise-results-templates-2016";
 
+		// si scarica il file Json
 		parse.downloadJSON(url_json,parse.getNameJSON());
 		System.out.println("Download JSON completato");
+		// si scarica il file CSV
 		parse.downloadCSV(parse.getURL(nameJSON), parse.getNameCSV());
 		System.out.println("Download CSV completato");
+		// si fa il parsing 
 		List<List<String>> records = ParserCSV.readFile(parse.getNameCSV());
-
-
 		ParserCSV.parserCSV(records);
+		
+		// si salva il risultato del parsing nella variabile budgets
 		budgets = ParserCSV.getBudgets();
 	}
 	
@@ -58,7 +64,6 @@ public class BudgetService implements IBudgetService {
 	 * Metodo per settare i metadata dell'applicazione
 	 * @param metadata
 	 */
-	
 	public static void setMetadata(ArrayList<Metadata> metadata) {
 		metadata.add(new Metadata("lei_code","Legal Entity Identifier Code","String"));
 		metadata.add(new Metadata("nsa","Country","String"));
@@ -71,14 +76,14 @@ public class BudgetService implements IBudgetService {
 		}
 
 	/**
-	 * getter dei budget
+	 * Getter dei budget
 	 */
 	@Override
 	public ArrayList<Budget> getBudget() {
 		return budgets;
 	}
 	/**
-	 * getter dei metadata
+	 * Getter dei metadata
 	 */
 	@Override
 	public ArrayList<Metadata> getMetadata() {
@@ -86,12 +91,15 @@ public class BudgetService implements IBudgetService {
 	}
 
 	
-	//implementazione delle operazioni
+	//implementazione delle operazioni statistiche
 	
+	/**
+	 * Metodo per calcolare la somma di un campo property
+	 */
 	@Override
 	public double sumBudget(String property) throws Exception {
 		double sum = 0;
-		
+		// in base al caso si va a prendere un campo diverso su cui fare la somma
 		switch(property) {
 			case "period":{
 				for(int i = 0; i < budgets.size(); i++) {
@@ -124,6 +132,9 @@ public class BudgetService implements IBudgetService {
 		return sum;
 	}
 
+	/**
+	 * Metodo per trovare il massimo valore di un campo property
+	 */
 	@Override
 	public double maxBudget(String property) throws Exception{
 		double max = 0;
@@ -131,11 +142,13 @@ public class BudgetService implements IBudgetService {
 		switch(property) {
 		case "period":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' period non puo' essere uguale a zero
 				if(budgets.get(i).getPeriod() > max && budgets.get(i).getPeriod() != 0) 
 					max = Double.valueOf(budgets.get(i).getPeriod());
 			}
 		} break;
 		case "item":{
+			// deve essere diverso da zero perche' item non puo' essere uguale a zero
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getItem()> max && budgets.get(i).getItem() != 0) 
 					max = Double.valueOf(budgets.get(i).getItem());
@@ -143,12 +156,14 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "amount":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' amount non puo' essere uguale un nan
 				if(budgets.get(i).getAmount()> max && !Double.isNaN(budgets.get(i).getAmount())) 
 					max = budgets.get(i).getAmount();
 			}
 		} break;
 		case "n_quarters":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
 				if(budgets.get(i).getN_quarters()> max && budgets.get(i).getN_quarters() != 0) 
 					max = Double.valueOf(budgets.get(i).getN_quarters());
 			}
@@ -161,6 +176,9 @@ public class BudgetService implements IBudgetService {
 		return max;
 	}
 
+	/**
+	 * Metodo che conta il numero di occorenze di un campo property
+	 */
 	@Override
 	public int countBudget(String property) throws Exception {
 		int counter = 0;
@@ -168,18 +186,21 @@ public class BudgetService implements IBudgetService {
 		switch(property) {
 		case "period":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' period non puo' essere uguale a zero
 				if(budgets.get(i).getPeriod() != 0) 
 					counter++;
 			}
 		} break;
 		case "item":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' item non puo' essere uguale a zero
 				if(budgets.get(i).getItem() != 0) 
 					counter++;
 			}
 		} break;
 		case "amount":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' amount non puo' essere un nan
 				if(!Double.isNaN(budgets.get(i).getAmount())) {
 					counter++;
 				}
@@ -187,26 +208,28 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "n_quarters":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
 				if(budgets.get(i).getN_quarters() != 0) 
 					counter++;
 			}
 		} break;
 		default: throw new Exception();
-		
 	}	
-
 		return counter;
 	}
 
+	/**
+	 * Metodo che calcola la media dei valori di un campo property
+	 */
 	@Override
 	public double avgBudget(String property) throws Exception{
 		double sum = 0;
-		int n = 0;
-		
+		int n = 0;	
 		
 		switch(property) {
 		case "period":{
 			for(int i = 0; i < budgets.size(); i++) {
+				// deve essere diverso da zero perche' period non puo' essere uguale a zero
 				if(budgets.get(i).getPeriod() != 0) {
 					sum += budgets.get(i).getPeriod();
 					n++;
@@ -216,6 +239,7 @@ public class BudgetService implements IBudgetService {
 		case "item":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getItem() != 0) {
+					// deve essere diverso da zero perche' item non puo' essere uguale a zero
 					sum += budgets.get(i).getItem();
 					n++;
 				}
@@ -224,6 +248,7 @@ public class BudgetService implements IBudgetService {
 		case "amount":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(!Double.isNaN(budgets.get(i).getAmount())) {
+					// deve essere diverso da zero perche' amount non puo' essere un nan
 					sum += budgets.get(i).getAmount();
 					n++;
 				}
@@ -232,6 +257,7 @@ public class BudgetService implements IBudgetService {
 		case "n_quarters":{
 			for(int i = 0; i < budgets.size(); i++) {
 				if(budgets.get(i).getN_quarters() != 0) {
+					// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
 					sum += budgets.get(i).getN_quarters();
 					n++;
 				}
@@ -245,6 +271,9 @@ public class BudgetService implements IBudgetService {
 
 	}
 	
+	/**
+	 * Metodo per trovare il minimo valore di un campo property
+	 */
 	@Override
 	public double minBudget(String property) throws Exception{
 		double min = 0;
@@ -253,6 +282,7 @@ public class BudgetService implements IBudgetService {
 			case "period":{
 				min = budgets.get(0).getPeriod();
 				for(int i = 1; i < budgets.size(); i++) {
+					// deve essere diverso da zero perche' period non puo' essere uguale a zero
 					if(budgets.get(i).getPeriod() < min && budgets.get(i).getPeriod() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getPeriod());
 				}
@@ -260,6 +290,7 @@ public class BudgetService implements IBudgetService {
 			case "item":{
 				min = budgets.get(0).getItem();
 				for(int i = 1; i < budgets.size(); i++) {
+					// deve essere diverso da zero perche' item non puo' essere uguale a zero
 					if(budgets.get(i).getItem() < min && budgets.get(i).getItem() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getItem());
 				}
@@ -267,6 +298,7 @@ public class BudgetService implements IBudgetService {
 			case "amount":{
 				min = budgets.get(0).getAmount();
 				for(int i = 1; i < budgets.size(); i++) {
+					// deve essere diverso da zero perche' amount non puo' essere un nan
 					if(budgets.get(i).getAmount() < min && !Double.isNaN(budgets.get(i).getAmount())) 
 						min = budgets.get(i).getAmount();
 				}
@@ -274,6 +306,7 @@ public class BudgetService implements IBudgetService {
 			case "n_quarters":{
 				min = budgets.get(0).getN_quarters();
 				for(int i = 1; i < budgets.size(); i++) {
+					// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
 					if(budgets.get(i).getN_quarters() < min && budgets.get(i).getN_quarters() != 0 ) 
 						min = Double.valueOf(budgets.get(i).getN_quarters());
 				}
@@ -284,73 +317,76 @@ public class BudgetService implements IBudgetService {
 		return min;
 	}
 
+	/**
+	 * Metodo per calcolare la deviazione standart di un campo property
+	 */
 	@Override
 	public double devstdBudget(String property) throws Exception{
+		
 		double count=0.0;
-
 		double avg = avgBudget(property);
-
 		double num= 0.0;
 		
 		switch (property) {
 		
 		case "period":{
 			for(Budget b : budgets){
+				// deve essere diverso da zero perche' period non puo' essere uguale a zero
 				if(b.getPeriod()== 0) {
 					continue;
-					
 				}else {
 					num += Math.pow((b.getPeriod() - avg), 2);
 					count++;
 				}
 			}
-		}break;
+		} break;
 			
 		case "item":{
 			for(Budget b : budgets){
+				// deve essere diverso da zero perche' item non puo' essere uguale a zero
 				if(b.getItem()== 0) {
 					continue;
-
 				}else {
 					num += Math.pow((b.getItem() - avg), 2);
 					count++;
 				}
 			}
-		}break;
+		} break;
 			
 		case "amount":{
 			for(Budget b : budgets){
+				// deve essere diverso da zero perche' n_quarters non puo' essere un nan
 				if(!Double.isNaN(b.getAmount())) {
 					num += Math.pow((b.getAmount() - avg), 2);
 					count++;	
+					}
 				}
-				}
-		}break;
+		} break;
 		
 		case "n_quarters":{
 			for(Budget b : budgets){
+				// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
 				if(b.getN_quarters()== 0) {
 					continue;
-
 				}else {
 					num += Math.pow((b.getN_quarters() - avg), 2);
 					count++;
 				}
 			}
-		}break;
+		} break;
 		default: throw new Exception();
-
 		}
-
 		double devStdB = Math.sqrt( num / count);
 		return devStdB; 
 	}
 
+	/**
+	 * Metodo per calcolare gli elementi unici di un campo property
+	 */
 	@Override
 	public Map<String, Integer> getUniqueString(String property) throws Exception {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		int count = 0;
-
 		
 		switch(property) {
 			case "lei_code":{
@@ -377,18 +413,24 @@ public class BudgetService implements IBudgetService {
 
 	//implementazione dei filtri
 	
+	/**
+	 * Metodo per effettuare il filtro condizionale
+	 */
 	@Override
 	public ArrayList<Budget> conditionalFilter(String fieldName, String number, String operator) throws Exception {
 		ArrayList<Budget> budgetsFiltered = new ArrayList<Budget>();
 		switch(operator) {
 		case "<":{
 			for(Budget b : budgets) {
+				// si prende il getter per prendere il valore della proprieta' che ci interessa
 				Method m = b.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
+				// se viene chiesto un double si deve convertire le stringhe in double
 				if(Double.class.isInstance(m.invoke(b))) {
 					double tmp = (double) m.invoke(b);
 					double value = Double.parseDouble(number);				
 					if(tmp < value) 
 						budgetsFiltered.add(b);
+				// se non viene chiesto un double viene chiesto un int e quindi bisogna convertire le stringhe in int	
 				} else {
 					int tmp = (int) m.invoke(b);
 					int value = Integer.parseInt(number);				
@@ -469,6 +511,9 @@ public class BudgetService implements IBudgetService {
 		return budgetsFiltered;
 	}
 
+	/**
+	 * Metodo per effettuare il filtro logico
+	 */
 	@Override
 	public ArrayList<Budget> logicalFilter(String fieldName1, String value1, String operator, String fieldName2, String value2)throws Exception {
 		ArrayList<Budget> budgetsFiltered = new ArrayList<Budget>();
@@ -476,13 +521,14 @@ public class BudgetService implements IBudgetService {
 		
 		switch(operator) {
 		case "and":{
+			// se manca il secondo campo viene lanciata un'eccezione
 			if(fieldName2.isEmpty() || value2.isEmpty())
 				throw new Exception();
 			for(Budget b : budgets) {
-				
+				// si vanno a prendere i valori su cui bisogna fare il confronto e le si salvano in delle stringhe
 				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
 				String tmp2 = FilterTools.getFilterString(fieldName2, value2, b);
-				
+				// si effettua il confronto 
 				if(tmp1.toLowerCase().equals(value1.toLowerCase()) && tmp2.toLowerCase().equals(value2.toLowerCase()))
 					budgetsFiltered.add(b);
 			}

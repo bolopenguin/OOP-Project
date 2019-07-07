@@ -10,6 +10,7 @@ import europeBanks.spring.service.BudgetService;
 
 /**
  * Questa classe permette l'avvio dell'applicazione.
+ * All'avvio vengono scaricati i file ed effettuato il loro parsing.
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  */
@@ -21,7 +22,9 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     		try {
+    			// Scarica i file e fa il parsing per creare l'Array List contenente gli oggetti del caso di studio
     			BudgetService.setBudgets();
+    			// Setta i metadata
 				BudgetService.setMetadata(new ArrayList<Metadata>());
 				System.out.println("Caricamento completato: in ascolto della porta 8080");
     		} catch (IOException e) {

@@ -68,7 +68,7 @@ public class Budget {
 	 * getter dell'item
 	 * @return
 	 */
-	public double getItem() {
+	public int getItem() {
 		return item;
 	}
 

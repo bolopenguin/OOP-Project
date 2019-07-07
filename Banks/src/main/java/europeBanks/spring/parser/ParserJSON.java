@@ -22,47 +22,65 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
- * La classe permette di fare il download del file voluto e salvarlo sul computer.
- * Infine sono presenti i metodi per effettuare il parsing del file scaricato in modo da poter individuare il file csv.
+ * La classe che contiene i metodi che permettono di fare il download del file voluto e salvarlo sul computer.
+ * Inoltre sono presenti i metodi per effettuare il parsing del file scaricato in modo da poter individuare il file csv.
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  */
 
 public class ParserJSON {
-	/**
-	 * variabili che indicano i nomi in cui verranno salavti i file csv e json
-	 */
+	// nome con cui viene salvato il file CSV
 	private String nameCSV; 
+	// nome con cui viene salvato il file JSON
 	private String nameJSON;
 	
-	
+	/**
+	 * Metodo che setta i nomi dei file CSV JSON
+	 * @param nameJSON
+	 * @param nameCSV
+	 */
 	public ParserJSON(String nameJSON, String nameCSV){
 		this.nameCSV = nameCSV; 
 		this.nameJSON = nameJSON ; 
 	}
 	
+	/** 
+	 * Getter del nome del Csv
+	 * @return
+	 */
 	public String getNameCSV() {
 		return nameCSV;
 	}
 
+	/**
+	 * Getter del nome del JSON
+	 * @return
+	 */
 	public String getNameJSON() {
 		return nameJSON;
 	}
 	
+	/**
+	 * Setter del nome del CSV
+	 * @param nameCSV
+	 */
 	public void setNameCSV(String nameCSV) {
 		this.nameCSV = nameCSV;
 	}
 
+	/**
+	 * Setter del nome del JSON
+	 * @param nameJSON
+	 */
 	public void setNameJSON(String nameJSON) {
 		this.nameJSON = nameJSON;
 	}
 	
 	/**
-	 * metodo che effettua il download del file json.
-	 * @param urlStr, è l'url del file json.
-	 * @param fileName, è il nome con il quale verra' salvato il file scaricato.
+	 * Metodo che effettua il download del file JSON
+	 * @param urlStr e' l'url del file json.
+	 * @param fileName e' il nome con il quale verra' salvato il file scaricato.
 	 */
-	
 	public void downloadJSON(String urlStr, String fileName) {
 		try {
 			FileWriter fW =new FileWriter(fileName);
@@ -92,6 +110,13 @@ public class ParserJSON {
 
 	}
 	
+	/**
+	 * Metodo che effettua il download del file CSV
+	 * @param urlStr url del file CSV 
+	 * @param fileName nome del file CSV
+	 * @throws IOException
+	 * @throws FileSystemException
+	 */
 	public void downloadCSV(String urlStr, String fileName) throws IOException, FileSystemException{
 		File file = new File(fileName);
 		//se un file con quel nome già esiste non fa niente
@@ -106,12 +131,11 @@ public class ParserJSON {
 	}
 
 	/**
-	 * metodo che effettua il parsing del Json andando a individuare il csv. 
-	 * @param nomeJSON, nome che identifica il file json.
-	 * @return urlAddress,  url che identifica dove si trova il csv.
-	 * @throws FileNotFoundException, eccezione nel caso in cui non riesca a trovare il file json.
+	 * Metodo che effettua il parsing del Json andando a individuare il csv. 
+	 * @param nomeJSON  Nome che identifica il file json.
+	 * @return urlAddress  Url che identifica dove si trova il csv.
+	 * @throws FileNotFoundException Eccezione nel caso in cui non riesca a trovare il file json.
 	 */
-
 	public String getURL (String nomeJSON)throws FileNotFoundException {
 			BufferedReader reader = new BufferedReader(new FileReader(nomeJSON));
 			String json = "";

@@ -24,7 +24,8 @@ import org.jboss.logging.Param;
 import org.json.JSONObject;
 
 /**
- * Classe per gestire le richieste fatte all'applicazione attraverso la porta 8080
+ * Classe per gestire le richieste fatte all'applicazione alla porta 8080.
+ * Vengono mappate le varie richieste e restituiti all'utente i dati richiesti.
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  *
@@ -32,16 +33,15 @@ import org.json.JSONObject;
 @RestController
 public class BankController {
 
+	// istanza della classe service, serve per chiamare le diverse funzioni statistiche
 	BudgetService service = new BudgetService();
 	
 	/**
 	 * Metodo che restituiscono i Metadata
 	 * @return
 	 */
-	
 	@RequestMapping(value = "/metadata", method = RequestMethod.GET)
-	public ArrayList<Metadata> metadata()
-	{
+	public ArrayList<Metadata> metadata(){
 		return service.getMetadata();
 	}
 	
@@ -51,31 +51,30 @@ public class BankController {
 	 */
 	
 	@RequestMapping(value = "/data", method = RequestMethod.GET)
-	public ArrayList<Budget> data(
-			@RequestParam(name = "logicalOperator", defaultValue = "") String logicalOperator, 
-			@RequestParam(name = "conditionalOperator", defaultValue = "") String conditionalOperator, 
-			@RequestParam(name = "field", defaultValue = "") String field, 
-			@RequestParam(name = "value", defaultValue = "") String value, 
-			@RequestParam(name = "field1", defaultValue = "") String field1, 
-			@RequestParam(name = "value1", defaultValue = "") String value1
-			) throws Exception
-	{	
+	public ArrayList<Budget> data(){	
 		return service.getBudget();
 	}
 	
-	/**
-	 * Implementazione delle Funzioni Statistiche
-	 */
+	// Implementazione delle Funzioni Statistiche
 	
+	
+	/**
+	 * Metodo che prende in ingresso una proprieta' e restituisce tutte le statistiche associate.
+	 * @param property Nome della proprieta' su cui calcolare le statistiche
+	 * @return 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
+	 */
 	@RequestMapping(value = "/stats", method = RequestMethod.GET)
 	public String statsBudget(@RequestParam("property") String property) 
 			throws Exception
 	{
+		// oggetto che sarà restituito all'utente
 		JSONObject stats = new JSONObject();
-		
 		try {
-			
+			// if per distinguere i casi in cui viene chiesta una statisticha su un campo numerico o di tipo Stringa
 			if(!(property.toLowerCase().equals("lei_code") || property.toLowerCase().equals("nsa") || property.toLowerCase().equals("label") )) {
+				// si va a prendere tutte le statistiche numeriche 
+				// e le si inseriscono nell'oggetto JSON
 				stats.put("average", service.avgBudget(property.toLowerCase()));
 				stats.put("sum", service.sumBudget(property.toLowerCase()));
 				stats.put("count", service.countBudget(property.toLowerCase()));
@@ -83,8 +82,12 @@ public class BankController {
 				stats.put("min", service.minBudget(property.toLowerCase()));
 				stats.put("devstd", service.devstdBudget(property.toLowerCase()));			
 			} else {
+				// si va a prendere la statistica relativa alle Stringhe
+				
+				// HashMap che contiene gli elementi unici
 				Map<String, Integer> map = new HashMap<String, Integer>();
 				map = service.getUniqueString(property.toLowerCase());
+				// si aggiungono i campi della map nell'oggetto JSON
 				Iterator it = map.entrySet().iterator();
 				while (it.hasNext()) {
 				    Map.Entry pairs = (Map.Entry)it.next();
@@ -95,36 +98,36 @@ public class BankController {
 		} catch (Exception e) {
 			Error.noPropertyMsg(property);
 		}
+		// ritorna il JSON all'utente
 		return stats.toString();
 	}
 	
 	
 	/**
 	 * Funzione che calcola la media dei valori della proprietà scelta
-	 * @param property proprietà su cui calcolare i valori
-	 * @return media 
-	 * @throws Exception 
+	 * @param property Proprieta' su cui calcolare i valori
+	 * @return 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
 	 */
-	
 	@RequestMapping(value = "/stats/average", method = RequestMethod.GET)
 	public String avgBudget(@RequestParam("property") String property) throws Exception
 	{
 		JSONObject average = new JSONObject();
 		try {
+			// si calcola la media e la si inserisce nel JSON
 			average.put("average", service.avgBudget(property.toLowerCase()));
 		} catch (Exception e) {
-			
 			Error.noPropertyMsg(property);
 		}
-		
+		// ritorna il JSON all'utente
 		return average.toString();
 	}
 
 	/**
 	 * Funzione che calcola la somma dei valori della proprieta' scelta
-	 * @param property proprietà su cui calcolare i valori
+	 * @param property Proprieta' su cui calcolare i valori
 	 * @return somma
-	 * @throws Exception 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
 	 */
 	
 	@RequestMapping(value = "/stats/sum", method = RequestMethod.GET)
@@ -132,20 +135,21 @@ public class BankController {
 	{
 		JSONObject addiction = new JSONObject();
 		try {
+			// si calcola la somma e la si inserisce nel JSON
 			addiction.put("sum", service.sumBudget(property.toLowerCase()));
 		} catch (Exception e) {
 			Error.noPropertyMsg(property);
 		}
-		
+		// ritorna il JSON all'utente
 		return addiction.toString();
 
 	}
 	
 	/**
 	 * Funzione che calcola il numero di occorrenze della proprieta' scelta
-	 * @param property proprietà di cui calcolare le occorrenze
-	 * @return conteggio
-	 * @throws Exception 
+	 * @param property Proprieta' di cui calcolare le occorrenze
+	 * @return 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
 	 */
 	
 	@RequestMapping(value = "/stats/count", method = RequestMethod.GET)
@@ -153,19 +157,20 @@ public class BankController {
 	{
 		JSONObject counter = new JSONObject();
 		try {
+			// si calcola il conteggio e lo si inserisce nel JSON
 			counter.put("count", service.countBudget(property.toLowerCase()));
 		} catch (Exception e) {
 			Error.noPropertyMsg(property);
 		}
-		
+		// ritorna il JSON all'utente
 		return counter.toString();
 	}
 	
 	/**
 	 * Funzione che calcola il massimo dei valori della proprieta' scelta
-	 * @param property proprietà in cui cercare il massimo
-	 * @return massimo
-	 * @throws Exception 
+	 * @param property Proprieta' in cui cercare il massimo
+	 * @return 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
 	 */
 	
 	@RequestMapping(value = "/stats/max", method = RequestMethod.GET)
@@ -173,19 +178,20 @@ public class BankController {
 	{
 		JSONObject max = new JSONObject();
 		try {
+			// si cerca il massimo e lo si inserisce nel JSON
 			max.put("max",service.maxBudget(property.toLowerCase()));
 		} catch (Exception e) {
 			Error.noPropertyMsg(property);
 		}
-		
+		// ritorna il JSON all'utente
 		return max.toString();
 	}
 	
 	/**
 	 * Funzione che calcola il minimo dei valori della proprieta' scelta
-	 * @param property proprietà in cui cercare il minimo
-	 * @return minimo
-	 * @throws Exception 
+	 * @param property Proprieta' in cui cercare il minimo
+	 * @return 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
 	 */
 	
 	@RequestMapping(value = "/stats/min", method = RequestMethod.GET)
@@ -193,20 +199,21 @@ public class BankController {
 	{
 		JSONObject min = new JSONObject();
 		try {
+			// si cerca il minimo e lo si inserisce nel JSON
 			min.put("min", service.minBudget(property.toLowerCase()));
 		} catch (Exception e) {
 			Error.noPropertyMsg(property);
 		}
-		
+		// ritorna il JSON all'utente
 		return min.toString();
 	}
 	
 	
 	/**
 	 * Funzione che calcola la deviazione standard dei valori della proprieta' scelta
-	 * @param property proprietà su cui calcolare la deviazione standard
-	 * @return deviazione standard
-	 * @throws Exception 
+	 * @param property Proprieta' su cui calcolare la deviazione standard
+	 * @return 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
 	 */
 	
 	@RequestMapping(value = "/stats/devstd", method = RequestMethod.GET)
@@ -214,38 +221,48 @@ public class BankController {
 	{
 		JSONObject devstd = new JSONObject();
 		try {
+			// si calcola la dev std e la si inserisce nel JSON
 			devstd.put("devstd", service.devstdBudget(property.toLowerCase()));
 		} catch (Exception e) {
 			Error.noPropertyMsg(property);
 		}
-		
+		// ritorna il JSON all'utente
 		return devstd.toString();
 	}
 	
+	
 	/**
 	 * Funzione che calcola il numero di occorrenze degli elementi unici su una proprieta'
-	 * @param property proprietà su individuare gli elementi unici
-	 * @return mappa che contiene elementi del tipo <valore , numero di occorrenze>
-	 * @throws Exception 
+	 * Viene applicato solo alle Stringhe
+	 * @param property Proprieta' su individuare gli elementi unici
+	 * @return 
+	 * @throws Exception Eccezione che viene lanciata nel caso in cui la proprietà richiesta sia errata/ non esiste
 	 */
-	
 	@RequestMapping(value = "/stats/unique", method = RequestMethod.GET)
 	public Map<String, Integer> getUniqueString(@RequestParam("property") String property) throws Exception
 	{
-		Map<String, Integer> map = new HashMap<String, Integer>();
 		try {
-			map = service.getUniqueString(property.toLowerCase());
+			// mappa che conterrà come chiave il nome del valore e come valore il numero di occorrenze presenti
+			return service.getUniqueString(property.toLowerCase());
 		} catch (Exception e) {
 			Error.noPropertyMsg(property);
 		}
-		
-		return map;
+		return null;
 	}
 
-	/**
-	 * Implementazione dei Filtri
-	 */
+	// implementazione dei filtri
 	
+	/**
+	 * Filtro Logico, si puo' applicare a tutte le proprieta'
+	 * Ritorna un Array List contente solo gli oggetti che sono stati filtrati
+	 * @param operator Operatore sui cui fare il filtro (AND, OR, NOT, IN, NIN)
+	 * @param field1 Proprieta' uno
+	 * @param value1 Valore della proprieta' 1
+	 * @param field2 Proprieta' due
+	 * @param value2 Valore della proprieta' 2
+	 * @return
+	 * @throws Exception eccezione nel caso in cui si sia chiesta una proprietà sbagliata / non esistente oppure nel caso in cui i valori di input siano errati
+	 */
 	@RequestMapping(value = "/logicalFilter", method = RequestMethod.GET)
 	public ArrayList<Budget> logicalFilter(
 			@RequestParam("operator") String operator, 
@@ -264,6 +281,16 @@ public class BankController {
 		return service.getBudget();
 	}
 	
+	
+	/**
+	 * Filtro Condizionale, si applica solo alle proprieta' di tipo numerico
+	 * Ritorna un Array List contente solo gli oggetti che sono stati filtrati
+	 * @param operator Operatore su cui fare il Filtro ( <, <=, =, >, >=) 
+	 * @param field Proprieta'
+	 * @param value Valore
+	 * @return
+	 * @throws Exception eccezione nel caso in cui si sia chiesta una proprietà sbagliata / non esistente oppure nel caso in cui i valori di input siano errati
+	 */
 	@RequestMapping(value = "/conditionalFilter", method = RequestMethod.GET)
 	public ArrayList<Budget> conditionalFilter(
 			@RequestParam("operator") String operator, 
