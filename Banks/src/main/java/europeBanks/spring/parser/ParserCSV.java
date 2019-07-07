@@ -100,7 +100,7 @@ public class ParserCSV {
 						line.get(2).isEmpty() ? 0 : Integer.parseInt(line.get(2)),
 						line.get(3).isEmpty() ? 0 : Integer.parseInt(line.get(3)),
 						line.get(4).isEmpty() ? "LabelNotFound" : line.get(4),
-						line.get(5).isEmpty() ? 0 : Double.parseDouble(line.get(5)),
+						line.get(5).isEmpty() ? Double.NaN : Double.parseDouble(line.get(5)),
 						line.get(6).isEmpty() ? 0 : Integer.parseInt(line.get(6))
 						);
 				template.add(b);

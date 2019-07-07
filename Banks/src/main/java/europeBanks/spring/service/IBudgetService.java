@@ -42,7 +42,7 @@ public interface IBudgetService {
 	 * @throws Exception 
 	 */
 
-	ArrayList<Budget> conditionalFilter(String fieldName, String[] number, String operator) throws Exception;
+	ArrayList<Budget> conditionalFilter(String fieldName, String number, String operator) throws Exception;
 	
 	ArrayList<Budget> logicalFilter(String fieldName1, String value1, String operator, String fieldName2, String value2) throws Exception;
 
