@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import europeBanks.spring.model.*;
 import europeBanks.spring.parser.*;
+import europeBanks.spring.util.FilterTools;
 
 
 
@@ -508,16 +509,7 @@ public class BudgetService implements IBudgetService {
 			if(fieldName2.isEmpty() || value2.isEmpty())
 				throw new Exception();
 			for(Budget b : budgets) {
-				Method m1 = b.getClass().getMethod("get"+fieldName1.substring(0, 1).toUpperCase()+fieldName1.substring(1),null);
-				
-				String tmp1 = null;
-				if(Double.class.isInstance(m1.invoke(b))) {
-					tmp1 = Double.toString((Double)m1.invoke(b));
-					value1 = Double.toString(Double.parseDouble(value1));
-				}
-				else if(Integer.class.isInstance(m1.invoke(b)))
-					tmp1 = Integer.toString((Integer)m1.invoke(b));
-				else tmp1 =(String) m1.invoke(b);
+				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
 				
 				String tmp2 = null;
 				Method m2 = b.getClass().getMethod("get"+fieldName2.substring(0, 1).toUpperCase()+fieldName2.substring(1),null);
