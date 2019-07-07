@@ -479,26 +479,9 @@ public class BudgetService implements IBudgetService {
 			if(fieldName2.isEmpty() || value2.isEmpty())
 				throw new Exception();
 			for(Budget b : budgets) {
-				Method m1 = b.getClass().getMethod("get"+fieldName1.substring(0, 1).toUpperCase()+fieldName1.substring(1),null);
 				
-				String tmp1 = null;
-				if(Double.class.isInstance(m1.invoke(b))) {
-					tmp1 = Double.toString((Double)m1.invoke(b));
-					value1 = Double.toString(Double.parseDouble(value1));
-				}
-				else if(Integer.class.isInstance(m1.invoke(b)))
-					tmp1 = Integer.toString((Integer)m1.invoke(b));
-				else tmp1 =(String) m1.invoke(b);
-				
-				String tmp2 = null;
-				Method m2 = b.getClass().getMethod("get"+fieldName2.substring(0, 1).toUpperCase()+fieldName2.substring(1),null);
-				if(Double.class.isInstance(m2.invoke(b))) {
-					value2 = Double.toString(Double.parseDouble(value2));
-					tmp2 = Double.toString((Double)m2.invoke(b));
-				}
-				else if(Integer.class.isInstance(m2.invoke(b)))
-					tmp2 = Integer.toString((Integer)m2.invoke(b));
-				else tmp2 =(String) m2.invoke(b);
+				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
+				String tmp2 = FilterTools.getFilterString(fieldName2, value2, b);
 				
 				if(tmp1.toLowerCase().equals(value1.toLowerCase()) && tmp2.toLowerCase().equals(value2.toLowerCase()))
 					budgetsFiltered.add(b);
@@ -509,17 +492,9 @@ public class BudgetService implements IBudgetService {
 			if(fieldName2.isEmpty() || value2.isEmpty())
 				throw new Exception();
 			for(Budget b : budgets) {
-				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
 				
-				String tmp2 = null;
-				Method m2 = b.getClass().getMethod("get"+fieldName2.substring(0, 1).toUpperCase()+fieldName2.substring(1),null);
-				if(Double.class.isInstance(m2.invoke(b))) {
-					value2 = Double.toString(Double.parseDouble(value2));
-					tmp2 = Double.toString((Double)m2.invoke(b));
-				}
-				else if(Integer.class.isInstance(m2.invoke(b)))
-					tmp2 = Integer.toString((Integer)m2.invoke(b));
-				else tmp2 =(String) m2.invoke(b);
+				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
+				String tmp2 = FilterTools.getFilterString(fieldName2, value2, b);
 				
 				if(tmp1.toLowerCase().equals(value1.toLowerCase()) || tmp2.toLowerCase().equals(value2.toLowerCase()))
 					budgetsFiltered.add(b);
@@ -527,16 +502,8 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "not":{
 			for(Budget b : budgets) {
-				Method m1 = b.getClass().getMethod("get"+fieldName1.substring(0, 1).toUpperCase()+fieldName1.substring(1),null);
 				
-				String tmp1 = null;
-				if(Double.class.isInstance(m1.invoke(b))) {
-					tmp1 = Double.toString((Double)m1.invoke(b));
-					value1 = Double.toString(Double.parseDouble(value1));
-				}
-				else if(Integer.class.isInstance(m1.invoke(b)))
-					tmp1 = Integer.toString((Integer)m1.invoke(b));
-				else tmp1 =(String) m1.invoke(b);
+				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
 				
 				if(!tmp1.toLowerCase().equals(value1.toLowerCase()))
 					budgetsFiltered.add(b);
@@ -544,25 +511,15 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "in":{
 			for(Budget b : budgets) {
-				Method m1 = b.getClass().getMethod("get"+fieldName1.substring(0, 1).toUpperCase()+fieldName1.substring(1),null);
-				
-				String tmp1 = null;
-				String tmp2 = null;
 				
 				try (Scanner rowScanner = new Scanner(value1)) {
 					rowScanner.useDelimiter(",");
 					while(rowScanner.hasNext()) {
-						tmp2 = rowScanner.next().toLowerCase();
 						
-						if(Double.class.isInstance(m1.invoke(b))) {
-							tmp1 = Double.toString((Double)m1.invoke(b));
-							tmp2 = Double.toString(Double.parseDouble(tmp2));
-						}
-						else if(Integer.class.isInstance(m1.invoke(b)))
-							tmp1 = Integer.toString((Integer)m1.invoke(b));
-						else tmp1 =(String) m1.invoke(b);
+						String tmp1 = rowScanner.next().toLowerCase();
+						String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
 						
-						if(tmp1.toLowerCase().equals(tmp2))
+						if(tmp2.toLowerCase().equals(tmp1))
 							budgetsFiltered.add(b);
 					}
 					rowScanner.close();
@@ -571,25 +528,14 @@ public class BudgetService implements IBudgetService {
 		} break;
 		case "nin":{
 			for(Budget b : budgets) {
-				Method m1 = b.getClass().getMethod("get"+fieldName1.substring(0, 1).toUpperCase()+fieldName1.substring(1),null);
-				
-				String tmp1 = null;
-				String tmp2 = null;
-				
 				try (Scanner rowScanner = new Scanner(value1)) {
 					rowScanner.useDelimiter(",");
 					while(rowScanner.hasNext()) {
-						tmp2 = rowScanner.next().toLowerCase();
 						
-						if(Double.class.isInstance(m1.invoke(b))) {
-							tmp1 = Double.toString((Double)m1.invoke(b));
-							tmp2 = Double.toString(Double.parseDouble(tmp2));
-						}
-						else if(Integer.class.isInstance(m1.invoke(b)))
-							tmp1 = Integer.toString((Integer)m1.invoke(b));
-						else tmp1 =(String) m1.invoke(b);
+						String tmp1 = rowScanner.next().toLowerCase();
+						String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
 						
-						if(!tmp1.toLowerCase().equals(tmp2))
+						if(!tmp2.toLowerCase().equals(tmp1))
 							budgetsFiltered.add(b);
 					}
 					rowScanner.close();
