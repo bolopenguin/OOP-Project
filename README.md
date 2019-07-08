@@ -39,8 +39,11 @@ Diagrammi utili per la compresione del progetto
 ### Diagrammi delle Sequenze
 
 [Avvio](https://github.com/bolopenguin/OOP-Project/blob/master/Avvio.jpg)
+
 [Richiesta di Tutte le Statistiche](https://github.com/bolopenguin/OOP-Project/blob/master/Richieste%20tutte%20statistiche.jpg)
+
 [Richiesta di una Statistica precisa](https://github.com/bolopenguin/OOP-Project/blob/master/Richieste%20Statistiche.jpg)
+
 [Richiesta di un Filtro](https://github.com/bolopenguin/OOP-Project/blob/master/Richieste%20filtro.jpg)
 
 ## Struttura del Progetto
