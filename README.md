@@ -93,7 +93,12 @@ Diagrammi utili per la compresione del progetto
 ### - Filtri
 
  - `http://localhost:8080/logicalFilter?field1={proprietà}&value1={valore}&field2={proprietà}&value2={valore}&operator={operatore_logico}`: Restituisce i dati filtrati secondo i valori inseriti e l'operatore scelto.
- **Attenzione**: alcuni operatori (not, in e nin) per fare il filtraggio si riferiscono a field1 e value1, quindi field2 e value2 saranno ignorati se presenti, gli altri operatori invece (and e or) necessitano anche field2 e value2 
+ **Attenzione**: alcuni operatori (not, in e nin) per fare il filtraggio si riferiscono a field1 e value1, quindi field2 e value2 saranno ignorati se presenti, gli altri operatori invece (and e or) necessitano anche field2 e value2. 
+ Inoltre nell'in e nel nin si possono inserire più valori separati da una virgola (ex. `http://localhost:8080/logicalFilter?field1=nsa&value1=IT,DE&operator=in`).
  
  - `http://localhost:8080/conditionalFilter?operator={operatore_condizionale}&field={proprietà_numerica}&value={valore}`: Restituisce i dati filtrati secondo i valori inseriti e l'operatore scelto.
+ 
+ ## Autori
+ - Damiano Bolognini: [bolopenguin](https://github.com/bolopenguin)
+ - Francesco Tontarelli: [fraton](https://github.com/fraton)
 
