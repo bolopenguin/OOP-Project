@@ -18,7 +18,7 @@ public class ParserCSV {
 	// Delimitatore su cui fare il parsing
 	final static String COMMA_DELIMITER = ",";
 	// Array List che contiene gli oggetti del nostro caso di caso
-	private static ArrayList<Budget> budgets;
+	private static ArrayList<Budget> budgets = new ArrayList<Budget>();
 
 	/**
 	 * Getter del bugets

@@ -26,7 +26,6 @@ public class Application {
     			BudgetService.setBudgets();
     			// Setta i metadata
 				BudgetService.setMetadata(new ArrayList<Metadata>());
-				System.out.println("Caricamento completato: in ascolto della porta 8080");
     		} catch (IOException e) {
     			e.printStackTrace();
     		}

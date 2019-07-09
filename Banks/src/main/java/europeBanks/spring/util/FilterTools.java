@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  */
-public abstract class FilterTools {
+public class FilterTools {
 	/**
 	 * Metodo che restituisce una stringa su cui poi verra' fatto un confronto per effettuare il filtraggio dei dati
 	 * @param field campo che si deve prendere 

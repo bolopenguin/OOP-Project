@@ -31,6 +31,8 @@ public class BudgetService implements IBudgetService {
 	private static ArrayList<Budget> budgets;
 	private static ArrayList<Metadata> metadata;
 
+	// metodi necessari per settare i data e i metadata
+	
 	/**
 	 * Metodo per andare a scaricare e parsare i file JSON e CSV
 	 * alla fine si setta la variabilie budgets che conterra' gli oggetti ricavati dal csv
@@ -58,6 +60,7 @@ public class BudgetService implements IBudgetService {
 		
 		// si salva il risultato del parsing nella variabile budgets
 		budgets = ParserCSV.getBudgets();
+		System.out.println("Caricamento completato");
 	}
 	
 	/**
