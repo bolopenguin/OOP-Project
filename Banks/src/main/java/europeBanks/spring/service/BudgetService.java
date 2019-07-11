@@ -559,35 +559,54 @@ public class BudgetService implements IBudgetService {
 			}
 		} break;
 		case "in":{
+			ArrayList<String> values = new ArrayList<String>();
+			boolean add;
+			
+			try (Scanner rowScanner = new Scanner(value1)) {
+				rowScanner.useDelimiter(",");
+				while(rowScanner.hasNext()) {
+					values.add(rowScanner.next().toLowerCase());
+				}
+				rowScanner.close();
+			}
+			
 			for(Budget b : budgets) {
+				add = false;
 				
-				try (Scanner rowScanner = new Scanner(value1)) {
-					rowScanner.useDelimiter(",");
-					while(rowScanner.hasNext()) {
-						
-						String tmp1 = rowScanner.next().toLowerCase();
-						String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
-						
-						if(tmp2.toLowerCase().equals(tmp1))
-							budgetsFiltered.add(b);
-					}
-					rowScanner.close();
+				for(String tmp1 : values) {
+					tmp1 = tmp1.toLowerCase();
+					String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
+					if(tmp2.toLowerCase().equals(tmp1))
+						add = true;
+				}
+				if(add) {
+					budgetsFiltered.add(b);
 				}
 			}
 		} break;
 		case "nin":{
+			ArrayList<String> values = new ArrayList<String>();
+			boolean add;
+			
+			try (Scanner rowScanner = new Scanner(value1)) {
+				rowScanner.useDelimiter(",");
+				while(rowScanner.hasNext()) {
+					values.add(rowScanner.next().toLowerCase());
+				}
+				rowScanner.close();
+			}
+			
 			for(Budget b : budgets) {
-				try (Scanner rowScanner = new Scanner(value1)) {
-					rowScanner.useDelimiter(",");
-					while(rowScanner.hasNext()) {
-						
-						String tmp1 = rowScanner.next().toLowerCase();
-						String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
-						
-						if(!tmp2.toLowerCase().equals(tmp1))
-							budgetsFiltered.add(b);
-					}
-					rowScanner.close();
+				add = true;
+				
+				for(String tmp1 : values) {
+					tmp1 = tmp1.toLowerCase();
+					String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
+					if(tmp2.toLowerCase().equals(tmp1))
+						add = false;
+				}
+				if(add) {
+					budgetsFiltered.add(b);
 				}
 			}
 		} break;

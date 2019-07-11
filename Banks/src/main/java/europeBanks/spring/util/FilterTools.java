@@ -32,8 +32,10 @@ public class FilterTools {
 			value = Double.toString(Double.parseDouble(value));
 		}
 		// se si lavora con dei int
-		else if(Integer.class.isInstance(m.invoke(b)))
+		else if(Integer.class.isInstance(m.invoke(b))) {
 			tmp = Integer.toString((Integer)m.invoke(b));
+			value = Integer.toString(Integer.parseInt(value));
+		}
 		// se si lavora con delle stringhe
 		else tmp =(String) m.invoke(b);
 		
