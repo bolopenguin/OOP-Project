@@ -80,14 +80,17 @@ Diagrammi utili per la compresione del progetto
  - `http://localhost:8080/metadata`: Restituisce tutti i metadati 
  
  - `http://localhost:8080/stats?property={proprietà}`: Restituisce tutte le statistiche relative a una proprietà 
- (ex. `http://localhost:8080/stats?property=amount`)
+ -(ex. `http://localhost:8080/stats?property=amount`)
  
  - `http://localhost:8080/stats/average?property={proprietà_numerica}`: Restituisce la media relativa a una proprietà 
- (ex. `http://localhost:8080/stats/average?property=n_quarters`)
+ -(ex. `http://localhost:8080/stats/average?property=n_quarters`)
+ 
  - `http://localhost:8080/stats/sum?property={proprietà_numerica}`: Restituisce la somma relativa a una proprietà 
- (ex. `http://localhost:8080/stats/sum?property=amount`)
+ -(ex. `http://localhost:8080/stats/sum?property=amount`)
+ 
  - `http://localhost:8080/stats/count?property={proprietà_numerica}`: Restituisce il conteggio degli elementi relativo a una proprietà 
- (ex. `http://localhost:8080/stats/count?property=amount`)
+ -(ex. `http://localhost:8080/stats/count?property=amount`)
+ 
  - `http://localhost:8080/stats/max?property={proprietà_numerica}`: Restituisce il massimo relativo a una proprietà 
  (ex. `http://localhost:8080/stats/max?property=amount`)
  - `http://localhost:8080/stats/min?property={proprietà_numerica}`: Restituisce il minimo relativo a una proprietà 
