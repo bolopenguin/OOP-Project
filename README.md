@@ -79,24 +79,42 @@ Diagrammi utili per la compresione del progetto
  - `http://localhost:8080/data`: Restituisce tutti i dati 
  - `http://localhost:8080/metadata`: Restituisce tutti i metadati 
  
- - `localhost:8080/stats?property={proprietà}`: Restituisce tutte le statistiche relative a una proprietà
+ - `http://localhost:8080/stats?property={proprietà}`: Restituisce tutte le statistiche relative a una proprietà
+ ex. `http://localhost:8080/stats?property=amount`
  
  - `http://localhost:8080/stats/average?property={proprietà_numerica}`: Restituisce la media relativa a una proprietà
+ ex. `http://localhost:8080/stats/average?property=n_quarters`
  - `http://localhost:8080/stats/sum?property={proprietà_numerica}`: Restituisce la somma relativa a una proprietà
+ ex. `http://localhost:8080/stats/sum?property=amount`
  - `http://localhost:8080/stats/count?property={proprietà_numerica}`: Restituisce il conteggio degli elementi relativo a una proprietà
+ ex. `http://localhost:8080/stats/count?property=amount`
  - `http://localhost:8080/stats/max?property={proprietà_numerica}`: Restituisce il massimo relativo a una proprietà
+ ex. `http://localhost:8080/stats/max?property=amount`
  - `http://localhost:8080/stats/min?property={proprietà_numerica}`: Restituisce il minimo relativo a una proprietà
+ ex. `http://localhost:8080/stats/min?property=amount`
  - `http://localhost:8080/stats/devstd?property={proprietà_numerica}`: Restituisce la deviazione standart relativa a una proprietà
+ ex. `http://localhost:8080/stats/devstd?property=amount`
  
  - `http://localhost:8080/stats/unique?property={proprietà_stringa}`: Restituisce il conteggio degli elementi unici relativo a una proprietà
+ ex. `http://localhost:8080/stats/unique?property=nsa` 
 
 ### - Filtri
 
  - `http://localhost:8080/logicalFilter?field1={proprietà}&value1={valore}&field2={proprietà}&value2={valore}&operator={operatore_logico}`: Restituisce i dati filtrati secondo i valori inseriti e l'operatore scelto.
  **Attenzione**: alcuni operatori (not, in e nin) per fare il filtraggio si riferiscono a field1 e value1, quindi field2 e value2 saranno ignorati se presenti, gli altri operatori invece (and e or) necessitano anche field2 e value2. 
- Inoltre nell'in e nel nin si possono inserire più valori separati da una virgola (ex. `http://localhost:8080/logicalFilter?field1=nsa&value1=IT,DE&operator=in`).
+ Inoltre nell'in e nel nin si possono inserire più valori separati da una virgola. 
+ ex. `http://localhost:8080/logicalFilter?field1=amount&value1=0&field2=nsa&value2=it&operator=and`
+ ex. `http://localhost:8080/logicalFilter?field1=amount&value1=0&field2=nsa&value2=it&operator=or`
+ ex. `http://localhost:8080/logicalFilter?field1=nsa&value1=cy&operator=not`
+ ex. `http://localhost:8080/logicalFilter?field1=nsa&value1=IT,CY&operator=in`
+ ex. `http://localhost:8080/logicalFilter?field1=nsa&value1=IT,CY&operator=nin`
  
  - `http://localhost:8080/conditionalFilter?operator={operatore_condizionale}&field={proprietà_numerica}&value={valore}`: Restituisce i dati filtrati secondo i valori inseriti e l'operatore scelto.
+ ex. `http://localhost:8080/conditionalFilter?operator=<&field=n_quarters&value=3`
+ ex. `http://localhost:8080/conditionalFilter?operator=<=&field=n_quarters&value=3`
+ ex. `http://localhost:8080/conditionalFilter?operator==&field=n_quarters&value=3`
+ ex. `http://localhost:8080/conditionalFilter?operator=>=&field=n_quarters&value=3`
+ ex. `http://localhost:8080/conditionalFilter?operator=>&field=n_quarters&value=3`
  
  ## Autori
  - Damiano Bolognini: [bolopenguin](https://github.com/bolopenguin)
