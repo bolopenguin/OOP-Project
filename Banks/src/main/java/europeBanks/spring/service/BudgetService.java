@@ -529,8 +529,11 @@ public class BudgetService implements IBudgetService {
 				throw new Exception();
 			for(Budget b : budgets) {
 				// si vanno a prendere i valori su cui bisogna fare il confronto e le si salvano in delle stringhe
-				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
-				String tmp2 = FilterTools.getFilterString(fieldName2, value2, b);
+				String tmp1 = FilterTools.getFilterString(fieldName1, b);
+				value1 = FilterTools.setValueString(fieldName1, value1, b);
+				String tmp2 = FilterTools.getFilterString(fieldName2, b);
+				value2 = FilterTools.setValueString(fieldName2, value2, b);
+				
 				// si effettua il confronto 
 				if(tmp1.toLowerCase().equals(value1.toLowerCase()) && tmp2.toLowerCase().equals(value2.toLowerCase()))
 					budgetsFiltered.add(b);
@@ -542,17 +545,20 @@ public class BudgetService implements IBudgetService {
 				throw new Exception();
 			for(Budget b : budgets) {
 				
-				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
-				String tmp2 = FilterTools.getFilterString(fieldName2, value2, b);
+				String tmp1 = FilterTools.getFilterString(fieldName1, b);
+				value1 = FilterTools.setValueString(fieldName1, value1, b);
+				String tmp2 = FilterTools.getFilterString(fieldName2, b);
+				value2 = FilterTools.setValueString(fieldName2, value2, b);
 				
-				if(tmp1.toLowerCase().equals(value1.toLowerCase()) || tmp2.toLowerCase().equals(value2.toLowerCase()))
+				if(tmp1.toLowerCase().equals(value1.toLowerCase()) | tmp2.toLowerCase().equals(value2.toLowerCase()))
 					budgetsFiltered.add(b);
 			}
 		} break;
 		case "not":{
 			for(Budget b : budgets) {
 				
-				String tmp1 = FilterTools.getFilterString(fieldName1, value1, b);
+				String tmp1 = FilterTools.getFilterString(fieldName1, b);
+				value1 = FilterTools.setValueString(fieldName1, value1, b);
 				
 				if(!tmp1.toLowerCase().equals(value1.toLowerCase()))
 					budgetsFiltered.add(b);
@@ -575,7 +581,9 @@ public class BudgetService implements IBudgetService {
 				
 				for(String tmp1 : values) {
 					tmp1 = tmp1.toLowerCase();
-					String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
+					String tmp2 = FilterTools.getFilterString(fieldName1, b);
+					value1 = FilterTools.setValueString(fieldName1, value1, b);
+					
 					if(tmp2.toLowerCase().equals(tmp1))
 						add = true;
 				}
@@ -601,7 +609,8 @@ public class BudgetService implements IBudgetService {
 				
 				for(String tmp1 : values) {
 					tmp1 = tmp1.toLowerCase();
-					String tmp2 = FilterTools.getFilterString(fieldName1, tmp1, b);
+					String tmp2 = FilterTools.getFilterString(fieldName1, b);
+					value1 = FilterTools.setValueString(fieldName1, value1, b);
 					if(tmp2.toLowerCase().equals(tmp1))
 						add = false;
 				}
