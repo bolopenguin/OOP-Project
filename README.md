@@ -25,7 +25,7 @@ Il Dataset in questione tratta le  diverse voci di bilancio (budget item) di num
 * Maven
 * Spring Framework
 
-**Osservazione**: nello sviluppo delle operazioni statistiche e dei filtri si è fatto un ampio uso della libreria `java.lang.reflect.Method` che ci ha evitato di implementare degli switch annidati.
+**Osservazione**: nello sviluppo delle operazioni statistiche e dei filtri si è fatto un ampio uso della libreria `java.lang.reflect.Method` che ci ha evitato di implementare degli switch annidati e codice ridondante.
 
 ## Diagrammi
 Diagrammi utili per la compresione del progetto
