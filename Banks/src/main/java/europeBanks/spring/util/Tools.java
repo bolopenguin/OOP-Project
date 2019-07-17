@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
  * @author Damiano Bolognini
  * @author Francesco Tontarelli
  */
-public class FilterTools {
+public class Tools {
 	/**
 	 * Metodo che restituisce una stringa su cui poi verra' fatto un confronto per effettuare il filtraggio dei dati
 	 * @param field campo che si deve prendere 
@@ -50,7 +50,7 @@ public class FilterTools {
 		if(Double.class.isInstance(m.invoke(b))) {
 			/*
 			* si prende il valore lo si trasforma in double e poi di nuovo in stringa
-			* questo processo è necessario perché se viene inserito un value 0 per i double questo non viene
+			* questo processo Ã¨ necessario perchÃ© se viene inserito un value 0 per i double questo non viene
 			* interpretato poi come double durante il confronto
 			*/
 			value = Double.toString(Double.parseDouble(value));
@@ -61,5 +61,55 @@ public class FilterTools {
 		}
 		
 		return value;
+	}
+	
+	
+	/**
+	 * Metodo che controlla se il parametro passato sia uno di quelli presenti nel csv
+	 * @param property proprieta' di cui controllare l'esistenza
+	 * @return
+	 * @throws Exception eccezione lanciata nel caso in cui la proprieta' non esista
+	 */
+	public static boolean check(String property) throws Exception {
+		if(property.equals("period") || property.equals("item") || property.equals("amount") || property.equals("n_quarters") || property.equals("lei_code") || property.equals("nsa") || property.equals("label")) {
+			return true;
+		}
+		throw new Exception();
+	}
+	
+	/**
+	 * Metodo che controlla se l'operatore aritmetico passato come parametro sia uno di quelli supportati
+	 * e inoltre controlla se i valori passati rispettino la relazione corrispondente
+	 * @param tmp primo valore
+	 * @param operator operatore aritmetico
+	 * @param value secondo valore 
+	 * @return
+	 * @throws Exception eccezione lanciata nel caso in cui sia stata chiesto un operatore non supportato
+	 */
+	public static boolean checkConditional(double tmp, String operator, double value) throws Exception {
+		switch(operator) {
+		case "<":{
+			if(tmp < value) 
+				return true;
+			} break;
+		case "<=":{
+			if(tmp <= value) 
+				return true;
+			} break;
+		case "=":{
+			if(tmp == value) 
+				return true;
+			} break;
+		case ">=":{
+			if(tmp >= value) 
+				return true;
+			} break;
+		case ">":{			
+			if(tmp > value) 
+				return true;
+			} break;
+		default: throw new Exception();
+		}
+		return false;
 	}
 }

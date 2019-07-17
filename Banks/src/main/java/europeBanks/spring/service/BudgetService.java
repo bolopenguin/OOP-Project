@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import europeBanks.spring.model.*;
 import europeBanks.spring.parser.*;
-import europeBanks.spring.util.FilterTools;
+import europeBanks.spring.util.Tools;
 
 
 
@@ -103,33 +103,17 @@ public class BudgetService implements IBudgetService {
 	public double sumBudget(String property) throws Exception {
 		double sum = 0;
 		// in base al caso si va a prendere un campo diverso su cui fare la somma
-		switch(property) {
-			case "period":{
-				for(int i = 0; i < budgets.size(); i++) {
-					if(budgets.get(i).getPeriod() != 0) 
-						sum += budgets.get(i).getPeriod();
+		
+		for(Budget b: budgets) {
+			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			if(Tools.check(property)) {
+				if(Double.class.isInstance(m.invoke(b)) && !Double.isNaN((double) m.invoke(b)) ) {
+					sum += (double) m.invoke(b);
+				} else if((int) m.invoke(b) != 0){
+					sum += (int) m.invoke(b);
 				}
-			} break;
-			case "item":{
-				for(int i = 0; i < budgets.size(); i++) {
-					if(budgets.get(i).getItem() != 0) 
-						sum += budgets.get(i).getItem();
-				}
-			} break;
-			case "amount":{
-				for(int i = 0; i < budgets.size(); i++) {
-					if(!Double.isNaN(budgets.get(i).getAmount())) {
-						sum += budgets.get(i).getAmount();
-					}
-				}
-			} break;
-			case "n_quarters":{
-				for(int i = 0; i < budgets.size(); i++) {
-					if(budgets.get(i).getN_quarters() != 0) 
-						sum += budgets.get(i).getN_quarters();
-				}
-			} break;
-			default: throw new Exception();
+
+			}
 		}
 		
 		return sum;
@@ -141,42 +125,44 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public double maxBudget(String property) throws Exception{
 		double max = 0;
-
-		switch(property) {
-		case "period":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' period non puo' essere uguale a zero
-				if(budgets.get(i).getPeriod() > max && budgets.get(i).getPeriod() != 0) 
-					max = Double.valueOf(budgets.get(i).getPeriod());
-			}
-		} break;
-		case "item":{
-			// deve essere diverso da zero perche' item non puo' essere uguale a zero
-			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getItem()> max && budgets.get(i).getItem() != 0) 
-					max = Double.valueOf(budgets.get(i).getItem());
-			}
-		} break;
-		case "amount":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' amount non puo' essere uguale un nan
-				if(budgets.get(i).getAmount()> max && !Double.isNaN(budgets.get(i).getAmount())) 
-					max = budgets.get(i).getAmount();
-			}
-		} break;
-		case "n_quarters":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
-				if(budgets.get(i).getN_quarters()> max && budgets.get(i).getN_quarters() != 0) 
-					max = Double.valueOf(budgets.get(i).getN_quarters());
-			}
-		} break;
 		
-		default: throw new Exception();
-		
+		for(Budget b: budgets) {
+			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			if(Tools.check(property)) {
+				if(Double.class.isInstance(m.invoke(b))) {
+					if((double) m.invoke(b) > max &&  !Double.isNaN((double) m.invoke(b))) 
+						max = (double) m.invoke(b);
+				} else {
+					if((int) m.invoke(b) > max && (int) m.invoke(b) != 0) 
+						max = (int) m.invoke(b);
+				}
+			}
 		}
 		
 		return max;
+	}
+	
+	/**
+	 * Metodo per trovare il minimo valore di un campo property
+	 */
+	@Override
+	public double minBudget(String property) throws Exception{
+		double min = 0;
+		
+		for(Budget b: budgets) {
+			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			if(Tools.check(property)) {
+				if(Double.class.isInstance(m.invoke(b))) {
+					if((double) m.invoke(b) < min &&  !Double.isNaN((double) m.invoke(b))) 
+						min = (double) m.invoke(b);
+				} else {
+					if((int) m.invoke(b) < min && (int) m.invoke(b) != 0) 
+						min = (int) m.invoke(b);
+				}
+			}
+		}
+
+		return min;
 	}
 
 	/**
@@ -185,39 +171,19 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public int countBudget(String property) throws Exception {
 		int counter = 0;
-
-		switch(property) {
-		case "period":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' period non puo' essere uguale a zero
-				if(budgets.get(i).getPeriod() != 0) 
+		
+		for(Budget b: budgets) {
+			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			if(Tools.check(property)) {
+				if(Double.class.isInstance(m.invoke(b)) && !Double.isNaN((double) m.invoke(b)) ) {
 					counter++;
-			}
-		} break;
-		case "item":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' item non puo' essere uguale a zero
-				if(budgets.get(i).getItem() != 0) 
-					counter++;
-			}
-		} break;
-		case "amount":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' amount non puo' essere un nan
-				if(!Double.isNaN(budgets.get(i).getAmount())) {
+				} else if((int) m.invoke(b) != 0){
 					counter++;
 				}
+
 			}
-		} break;
-		case "n_quarters":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
-				if(budgets.get(i).getN_quarters() != 0) 
-					counter++;
-			}
-		} break;
-		default: throw new Exception();
-	}	
+		}
+		
 		return counter;
 	}
 
@@ -229,96 +195,24 @@ public class BudgetService implements IBudgetService {
 		double sum = 0;
 		int n = 0;	
 		
-		switch(property) {
-		case "period":{
-			for(int i = 0; i < budgets.size(); i++) {
-				// deve essere diverso da zero perche' period non puo' essere uguale a zero
-				if(budgets.get(i).getPeriod() != 0) {
-					sum += budgets.get(i).getPeriod();
+		for(Budget b: budgets) {
+			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			if(Tools.check(property)) {
+				if(Double.class.isInstance(m.invoke(b)) && !Double.isNaN((double) m.invoke(b)) ) {
+					sum += (double) m.invoke(b);
+					n++;
+				} else if((int) m.invoke(b) != 0){
+					sum += (int) m.invoke(b);
 					n++;
 				}
+
 			}
-		} break;
-		case "item":{
-			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getItem() != 0) {
-					// deve essere diverso da zero perche' item non puo' essere uguale a zero
-					sum += budgets.get(i).getItem();
-					n++;
-				}
-			}
-		} break;
-		case "amount":{
-			for(int i = 0; i < budgets.size(); i++) {
-				if(!Double.isNaN(budgets.get(i).getAmount())) {
-					// deve essere diverso da zero perche' amount non puo' essere un nan
-					sum += budgets.get(i).getAmount();
-					n++;
-				}
-			}
-		} break;
-		case "n_quarters":{
-			for(int i = 0; i < budgets.size(); i++) {
-				if(budgets.get(i).getN_quarters() != 0) {
-					// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
-					sum += budgets.get(i).getN_quarters();
-					n++;
-				}
-			}
-		} break;
-		default: throw new Exception();
-	
-	}
+		}
 		double avg = sum/n;
 		return avg;
 
 	}
 	
-	/**
-	 * Metodo per trovare il minimo valore di un campo property
-	 */
-	@Override
-	public double minBudget(String property) throws Exception{
-		double min = 0;
-		
-		switch(property) {
-			case "period":{
-				min = budgets.get(0).getPeriod();
-				for(int i = 1; i < budgets.size(); i++) {
-					// deve essere diverso da zero perche' period non puo' essere uguale a zero
-					if(budgets.get(i).getPeriod() < min && budgets.get(i).getPeriod() != 0 ) 
-						min = Double.valueOf(budgets.get(i).getPeriod());
-				}
-			} break;
-			case "item":{
-				min = budgets.get(0).getItem();
-				for(int i = 1; i < budgets.size(); i++) {
-					// deve essere diverso da zero perche' item non puo' essere uguale a zero
-					if(budgets.get(i).getItem() < min && budgets.get(i).getItem() != 0 ) 
-						min = Double.valueOf(budgets.get(i).getItem());
-				}
-			} break;
-			case "amount":{
-				min = budgets.get(0).getAmount();
-				for(int i = 1; i < budgets.size(); i++) {
-					// deve essere diverso da zero perche' amount non puo' essere un nan
-					if(budgets.get(i).getAmount() < min && !Double.isNaN(budgets.get(i).getAmount())) 
-						min = budgets.get(i).getAmount();
-				}
-			} break;
-			case "n_quarters":{
-				min = budgets.get(0).getN_quarters();
-				for(int i = 1; i < budgets.size(); i++) {
-					// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
-					if(budgets.get(i).getN_quarters() < min && budgets.get(i).getN_quarters() != 0 ) 
-						min = Double.valueOf(budgets.get(i).getN_quarters());
-				}
-			} break;
-			default:throw new Exception();
-		}
-
-		return min;
-	}
 
 	/**
 	 * Metodo per calcolare la deviazione standart di un campo property
@@ -328,59 +222,23 @@ public class BudgetService implements IBudgetService {
 		
 		double count=0.0;
 		double avg = avgBudget(property);
-		double num= 0.0;
+		int num = 0;
 		
-		switch (property) {
-		
-		case "period":{
-			for(Budget b : budgets){
-				// deve essere diverso da zero perche' period non puo' essere uguale a zero
-				if(b.getPeriod()== 0) {
-					continue;
-				}else {
-					num += Math.pow((b.getPeriod() - avg), 2);
-					count++;
+		for(Budget b: budgets) {
+			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			if(Tools.check(property)) {
+				if(Double.class.isInstance(m.invoke(b)) && !Double.isNaN((double) m.invoke(b)) ) {
+					num += Math.pow(((double) m.invoke(b) - avg), 2);
+					num++;
+				} else if((int) m.invoke(b) != 0){
+					num += Math.pow(((int) m.invoke(b) - avg), 2);
+					num++;
 				}
+
 			}
-		} break;
-			
-		case "item":{
-			for(Budget b : budgets){
-				// deve essere diverso da zero perche' item non puo' essere uguale a zero
-				if(b.getItem()== 0) {
-					continue;
-				}else {
-					num += Math.pow((b.getItem() - avg), 2);
-					count++;
-				}
-			}
-		} break;
-			
-		case "amount":{
-			for(Budget b : budgets){
-				// deve essere diverso da zero perche' n_quarters non puo' essere un nan
-				if(!Double.isNaN(b.getAmount())) {
-					num += Math.pow((b.getAmount() - avg), 2);
-					count++;	
-					}
-				}
-		} break;
-		
-		case "n_quarters":{
-			for(Budget b : budgets){
-				// deve essere diverso da zero perche' n_quarters non puo' essere uguale a zero
-				if(b.getN_quarters()== 0) {
-					continue;
-				}else {
-					num += Math.pow((b.getN_quarters() - avg), 2);
-					count++;
-				}
-			}
-		} break;
-		default: throw new Exception();
 		}
-		double devStdB = Math.sqrt( num / count);
-		return devStdB; 
+		
+		return Math.sqrt( num / count);
 	}
 
 	/**
@@ -391,25 +249,11 @@ public class BudgetService implements IBudgetService {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		int count = 0;
 		
-		switch(property) {
-			case "lei_code":{
-				for(int i = 0; i < budgets.size(); i++) {
-					map.put(budgets.get(i).getLei_code(), count++);
-				}
-				
-			} break;
-			case "nsa":{
-				for(int i = 0; i < budgets.size(); i++) {
-					map.put(budgets.get(i).getNsa(), count++);
-				}
-			} break;
-			case "label":{
-				for(int i = 0; i < budgets.size(); i++) {
-					map.put(budgets.get(i).getLabel(), count++);
-				}
-				
-			} break;
-			default: throw new Exception();
+		for(Budget b: budgets) {
+			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			if(Tools.check(property)) {
+				map.put((String) m.invoke(b), count++);
+			}
 		}
 		return map;
 	}
@@ -422,93 +266,23 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public ArrayList<Budget> conditionalFilter(String fieldName, String number, String operator) throws Exception {
 		ArrayList<Budget> budgetsFiltered = new ArrayList<Budget>();
-		switch(operator) {
-		case "<":{
-			for(Budget b : budgets) {
-				// si prende il getter per prendere il valore della proprieta' che ci interessa
-				Method m = b.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
-				// se viene chiesto un double si deve convertire le stringhe in double
-				if(Double.class.isInstance(m.invoke(b))) {
-					double tmp = (double) m.invoke(b);
-					double value = Double.parseDouble(number);				
-					if(tmp < value) 
-						budgetsFiltered.add(b);
-				// se non viene chiesto un double viene chiesto un int e quindi bisogna convertire le stringhe in int	
-				} else {
-					int tmp = (int) m.invoke(b);
-					int value = Integer.parseInt(number);				
-					if(tmp < value) 
-						budgetsFiltered.add(b);
-				}
+		//check(operator, tmp, value)
+		for(Budget b : budgets) {
+			// si prende il getter per prendere il valore della proprieta' che ci interessa
+			Method m = b.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
+			// se viene chiesto un double si deve convertire le stringhe in double
+			if(Double.class.isInstance(m.invoke(b))) {
+				double tmp = (double) m.invoke(b);
+				double value = Double.parseDouble(number);				
+				if(Tools.checkConditional(tmp, operator, value)) 
+					budgetsFiltered.add(b);
+			// se non viene chiesto un double viene chiesto un int e quindi bisogna convertire le stringhe in int	
+			} else {
+				int tmp = (int) m.invoke(b);
+				int value = Integer.parseInt(number);				
+				if(Tools.checkConditional(tmp, operator, value)) 
+					budgetsFiltered.add(b);
 			}
-			
-		} break;
-		case "<=":{
-			for(Budget b : budgets) {
-				Method m = b.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
-				if(Double.class.isInstance(m.invoke(b))) {
-					double tmp = (double) m.invoke(b);
-					double value = Double.parseDouble(number);				
-					if(tmp <= value) 
-						budgetsFiltered.add(b);
-				} else {
-					int tmp = (int) m.invoke(b);
-					int value = Integer.parseInt(number);				
-					if(tmp <= value) 
-						budgetsFiltered.add(b);
-				}
-			}
-			
-		} break;
-		case "=":{
-			for(Budget b : budgets) {
-				Method m = b.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
-				if(Double.class.isInstance(m.invoke(b))) {
-					double tmp = (double) m.invoke(b);
-					double value = Double.parseDouble(number);				
-					if(tmp == value) 
-						budgetsFiltered.add(b);
-				} else {
-					int tmp = (int) m.invoke(b);
-					int value = Integer.parseInt(number);				
-					if(tmp == value) 
-						budgetsFiltered.add(b);
-				}
-			}
-		} break;
-		case ">=":{
-			for(Budget b : budgets) {
-				Method m = b.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
-				if(Double.class.isInstance(m.invoke(b))) {
-					double tmp = (double) m.invoke(b);
-					double value = Double.parseDouble(number);				
-					if(tmp >= value) 
-						budgetsFiltered.add(b);
-				} else {
-					int tmp = (int) m.invoke(b);
-					int value = Integer.parseInt(number);				
-					if(tmp >= value) 
-						budgetsFiltered.add(b);
-				}
-			}
-		} break;
-		case ">":{
-			for(Budget b : budgets) {
-				Method m = b.getClass().getMethod("get"+fieldName.substring(0, 1).toUpperCase()+fieldName.substring(1),null);
-				if(Double.class.isInstance(m.invoke(b))) {
-					double tmp = (double) m.invoke(b);
-					double value = Double.parseDouble(number);				
-					if(tmp > value) 
-						budgetsFiltered.add(b);
-				} else {
-					int tmp = (int) m.invoke(b);
-					int value = Integer.parseInt(number);				
-					if(tmp > value) 
-						budgetsFiltered.add(b);
-				}
-			}
-		} break;
-		default: throw new Exception();
 		}
 		
 		return budgetsFiltered;
@@ -529,10 +303,10 @@ public class BudgetService implements IBudgetService {
 				throw new Exception();
 			for(Budget b : budgets) {
 				// si vanno a prendere i valori su cui bisogna fare il confronto e le si salvano in delle stringhe
-				String tmp1 = FilterTools.getFilterString(fieldName1, b);
-				value1 = FilterTools.setValueString(fieldName1, value1, b);
-				String tmp2 = FilterTools.getFilterString(fieldName2, b);
-				value2 = FilterTools.setValueString(fieldName2, value2, b);
+				String tmp1 = Tools.getFilterString(fieldName1, b);
+				value1 = Tools.setValueString(fieldName1, value1, b);
+				String tmp2 = Tools.getFilterString(fieldName2, b);
+				value2 = Tools.setValueString(fieldName2, value2, b);
 				
 				// si effettua il confronto 
 				if(tmp1.toLowerCase().equals(value1.toLowerCase()) && tmp2.toLowerCase().equals(value2.toLowerCase()))
@@ -545,10 +319,10 @@ public class BudgetService implements IBudgetService {
 				throw new Exception();
 			for(Budget b : budgets) {
 				
-				String tmp1 = FilterTools.getFilterString(fieldName1, b);
-				value1 = FilterTools.setValueString(fieldName1, value1, b);
-				String tmp2 = FilterTools.getFilterString(fieldName2, b);
-				value2 = FilterTools.setValueString(fieldName2, value2, b);
+				String tmp1 = Tools.getFilterString(fieldName1, b);
+				value1 = Tools.setValueString(fieldName1, value1, b);
+				String tmp2 = Tools.getFilterString(fieldName2, b);
+				value2 = Tools.setValueString(fieldName2, value2, b);
 				
 				if(tmp1.toLowerCase().equals(value1.toLowerCase()) | tmp2.toLowerCase().equals(value2.toLowerCase()))
 					budgetsFiltered.add(b);
@@ -557,8 +331,8 @@ public class BudgetService implements IBudgetService {
 		case "not":{
 			for(Budget b : budgets) {
 				
-				String tmp1 = FilterTools.getFilterString(fieldName1, b);
-				value1 = FilterTools.setValueString(fieldName1, value1, b);
+				String tmp1 = Tools.getFilterString(fieldName1, b);
+				value1 = Tools.setValueString(fieldName1, value1, b);
 				
 				if(!tmp1.toLowerCase().equals(value1.toLowerCase()))
 					budgetsFiltered.add(b);
@@ -568,6 +342,7 @@ public class BudgetService implements IBudgetService {
 			ArrayList<String> values = new ArrayList<String>();
 			boolean add;
 			
+			// si vanno a prendere i valori passati come input e li si salvano in un arrayList di stringhe
 			try (Scanner rowScanner = new Scanner(value1)) {
 				rowScanner.useDelimiter(",");
 				while(rowScanner.hasNext()) {
@@ -576,13 +351,14 @@ public class BudgetService implements IBudgetService {
 				rowScanner.close();
 			}
 			
+			// si controlla elemento per elemento se il campo da confrontare sia uguale a uno dei valori passati come input
 			for(Budget b : budgets) {
 				add = false;
 				
 				for(String tmp1 : values) {
 					tmp1 = tmp1.toLowerCase();
-					String tmp2 = FilterTools.getFilterString(fieldName1, b);
-					value1 = FilterTools.setValueString(fieldName1, value1, b);
+					String tmp2 = Tools.getFilterString(fieldName1, b);
+					value1 = Tools.setValueString(fieldName1, value1, b);
 					
 					if(tmp2.toLowerCase().equals(tmp1))
 						add = true;
@@ -609,8 +385,8 @@ public class BudgetService implements IBudgetService {
 				
 				for(String tmp1 : values) {
 					tmp1 = tmp1.toLowerCase();
-					String tmp2 = FilterTools.getFilterString(fieldName1, b);
-					value1 = FilterTools.setValueString(fieldName1, value1, b);
+					String tmp2 = Tools.getFilterString(fieldName1, b);
+					value1 = Tools.setValueString(fieldName1, value1, b);
 					if(tmp2.toLowerCase().equals(tmp1))
 						add = false;
 				}
