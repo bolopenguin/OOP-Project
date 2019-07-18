@@ -124,8 +124,16 @@ public class BudgetService implements IBudgetService {
 	 */
 	@Override
 	public double maxBudget(String property) throws Exception{
-		double max = 0;
+		//serve per inializzare il massimo al primo elemento dell'array list
+		Method tmp = budgets.get(0).getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+		double max;
+		if(Double.class.isInstance(tmp.invoke(budgets.get(0)))) {
+			max = (double) tmp.invoke(budgets.get(0));
+		} else {
+			max = (int) tmp.invoke(budgets.get(0));
+		}
 		
+		//serve per cercare il massimo e salvarlo in max
 		for(Budget b: budgets) {
 			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
 			if(Tools.check(property)) {
@@ -147,7 +155,15 @@ public class BudgetService implements IBudgetService {
 	 */
 	@Override
 	public double minBudget(String property) throws Exception{
-		double min = 0;
+		
+		Method tmp = budgets.get(0).getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+		double min;
+		if(Double.class.isInstance(tmp.invoke(budgets.get(0)))) {
+			min = (double) tmp.invoke(budgets.get(0));
+		} else {
+			min = (int) tmp.invoke(budgets.get(0));
+		}
+		
 		
 		for(Budget b: budgets) {
 			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
@@ -220,7 +236,7 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public double devstdBudget(String property) throws Exception{
 		
-		double count=0.0;
+		double count = 0;
 		double avg = avgBudget(property);
 		int num = 0;
 		
@@ -297,6 +313,7 @@ public class BudgetService implements IBudgetService {
 		operator = operator.toLowerCase();
 		
 		switch(operator) {
+		
 		case "and":{
 			// se manca il secondo campo viene lanciata un'eccezione
 			if(fieldName2.isEmpty() || value2.isEmpty())
@@ -314,6 +331,7 @@ public class BudgetService implements IBudgetService {
 			}
 			
 		} break;
+		
 		case "or":{
 			if(fieldName2.isEmpty() || value2.isEmpty())
 				throw new Exception();
@@ -328,6 +346,7 @@ public class BudgetService implements IBudgetService {
 					budgetsFiltered.add(b);
 			}
 		} break;
+		
 		case "not":{
 			for(Budget b : budgets) {
 				
@@ -338,6 +357,7 @@ public class BudgetService implements IBudgetService {
 					budgetsFiltered.add(b);
 			}
 		} break;
+		
 		case "in":{
 			ArrayList<String> values = new ArrayList<String>();
 			boolean add;
