@@ -238,17 +238,17 @@ public class BudgetService implements IBudgetService {
 		
 		double count = 0;
 		double avg = avgBudget(property);
-		int num = 0;
+		double num = 0;
 		
 		for(Budget b: budgets) {
 			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
 			if(Tools.check(property)) {
 				if(Double.class.isInstance(m.invoke(b)) && !Double.isNaN((double) m.invoke(b)) ) {
 					num += Math.pow(((double) m.invoke(b) - avg), 2);
-					num++;
+					count++;
 				} else if((int) m.invoke(b) != 0){
 					num += Math.pow(((int) m.invoke(b) - avg), 2);
-					num++;
+					count++;
 				}
 
 			}
