@@ -125,17 +125,17 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public double maxBudget(String property) throws Exception{
 		//serve per inializzare il massimo al primo elemento dell'array list
-		Method tmp = budgets.get(0).getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+		Method m = budgets.get(0).getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
 		double max;
-		if(Double.class.isInstance(tmp.invoke(budgets.get(0)))) {
-			max = (double) tmp.invoke(budgets.get(0));
+		if(Double.class.isInstance(m.invoke(budgets.get(0)))) {
+			max = (double) m.invoke(budgets.get(0));
 		} else {
-			max = (int) tmp.invoke(budgets.get(0));
+			max = (int) m.invoke(budgets.get(0));
 		}
 		
 		//serve per cercare il massimo e salvarlo in max
 		for(Budget b: budgets) {
-			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
 			if(Tools.check(property)) {
 				if(Double.class.isInstance(m.invoke(b))) {
 					if((double) m.invoke(b) > max &&  !Double.isNaN((double) m.invoke(b))) 
@@ -156,17 +156,17 @@ public class BudgetService implements IBudgetService {
 	@Override
 	public double minBudget(String property) throws Exception{
 		
-		Method tmp = budgets.get(0).getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+		Method m = budgets.get(0).getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
 		double min;
-		if(Double.class.isInstance(tmp.invoke(budgets.get(0)))) {
-			min = (double) tmp.invoke(budgets.get(0));
+		if(Double.class.isInstance(m.invoke(budgets.get(0)))) {
+			min = (double) m.invoke(budgets.get(0));
 		} else {
-			min = (int) tmp.invoke(budgets.get(0));
+			min = (int) m.invoke(budgets.get(0));
 		}
 		
 		
 		for(Budget b: budgets) {
-			Method m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
+			m = b.getClass().getMethod("get"+property.substring(0, 1).toUpperCase()+property.substring(1),null);
 			if(Tools.check(property)) {
 				if(Double.class.isInstance(m.invoke(b))) {
 					if((double) m.invoke(b) < min &&  !Double.isNaN((double) m.invoke(b))) 
